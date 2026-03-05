@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Dr. Zeeshan - Clinical Psychologist Website
 
 A professional medical website for Dr. Zeeshan's clinical psychology practice built with Python Flask.
@@ -30,3 +31,6 @@ A professional medical website for Dr. Zeeshan's clinical psychology practice bu
 ```bash
 git clone <repository-url>
 cd dr_zeeshan_clinic
+=======
+# dr_zeeshan_website
+>>>>>>> 9923b9cbc2ab9505f1c8ee3f95b6219136f5bdd8
