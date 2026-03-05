@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-padding">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <h1 style="color: var(--teal); font-size: 2.5rem; margin-bottom: 1rem;">Book an Appointment</h1>
+            <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 3rem;">
+                Schedule a confidential session with Dr. Zeeshan
+            </p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 3rem;">
+            <div class="form-container" data-aos="fade-right">
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="form-group">
+                        {{ form.appointment_date.label(class="form-label") }}
+                        {{ form.appointment_date(class="form-control", type="date") }}
+                        {% if form.appointment_date.errors %}
+                            {% for error in form.appointment_date.errors %}
+                                <span style="color: #F56565; font-size: 0.875rem;">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form.appointment_time.label(class="form-label") }}
+                        {{ form.appointment_time(class="form-control") }}
+                        {% if form.appointment_time.errors %}
+                            {% for error in form.appointment_time.errors %}
+                                <span style="color: #F56565; font-size: 0.875rem;">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form.description.label(class="form-label") }}
+                        {{ form.description(class="form-control", rows="5", placeholder="Please briefly describe the reason for your visit...") }}
+                        {% if form.description.errors %}
+                            {% for error in form.description.errors %}
+                                <span style="color: #F56565; font-size: 0.875rem;">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-primary", style="width: 100%;") }}
+                    </div>
+                </form>
+            </div>
+            
+            <div data-aos="fade-left">
+                <!-- Appointment page mein doctor ki info -->
+                <div class="card">
+                    <h3>About {{ doctor.name }}</h3>
+                    <p><strong>{{ doctor.title }}</strong></p>
+                    <p>{{ doctor.experience }} experience</p>
+                    <p>Contact: {{ doctor.phone }}</p>
+                     <h3 style="color: var(--teal); margin-bottom: 1.5rem; margin-top: 1.5rem;">Appointment Information</h3>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark-blue); font-size: 1.1rem; margin-bottom: 0.5rem;">Session Duration</h4>
+                        <p style="color: var(--text-light);">50 minutes per session</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark-blue); font-size: 1.1rem; margin-bottom: 0.5rem;">Consultation Fee</h4>
+                        <p style="color: var(--text-light);">$150 per session (sliding scale available)</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark-blue); font-size: 1.1rem; margin-bottom: 0.5rem;">Cancellation Policy</h4>
+                        <p style="color: var(--text-light);">Please cancel at least 24 hours in advance to avoid fees</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark-blue); font-size: 1.1rem; margin-bottom: 0.5rem;">Insurance</h4>
+                        <p style="color: var(--text-light);">We accept most major insurance plans</p>
+                    </div>
+                    
+                    <hr style="border: none; border-top: 1px solid var(--gray); margin: 1.5rem 0;">
+                    
+                    <div style="background: var(--light-bg); padding: 1.5rem; border-radius: 10px;">
+                        <h4 style="color: var(--dark-blue); font-size: 1.1rem; margin-bottom: 0.5rem;">Need Immediate Help?</h4>
+                        <p style="color: var(--text-light); margin-bottom: 1rem;">
+                            For urgent matters, please call our office directly.
+                        </p>
+                        <p style="font-weight: 600; color: var(--teal);">
+                            <i class="fas fa-phone" style="margin-right: 0.5rem;"></i> +1 (555) 123-4567
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

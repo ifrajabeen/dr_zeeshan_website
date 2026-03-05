@@ -1,0 +1,49 @@
+dr_zeeshan_clinic/
+├── app.py
+├── requirements.txt
+├── run.py
+├── instance/
+│   └── clinic.db
+├── clinic.db
+├── .env
+├── README.md
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── main.js
+│   ├── images/
+│   │   ├── dr-zeeshan.jpg
+│   │   └── hero-bg.svg
+│   └── uploads/
+├── templates/
+│   ├── base.html
+│   ├── index.html
+│   ├── about.html
+│   ├── appointment.html
+│   ├── login.html
+│   ├── signup.html
+│   ├── reviews.html
+│   ├── dashboard.html
+│   ├── admin/
+│   │   └── manage_appointments.html
+│   └── includes/
+│       ├── _navbar.html
+│       └── _footer.html
+├── models/
+│   └── models.py
+├── forms/
+│   └── forms.py
+├── routes/
+│   ├── __init__.py
+│   ├── auth.py
+│   ├── main.py
+│   ├── appointments.py
+│   ├── reviews.py
+│   └── admin.py
+└── utils/
+    └── decorators.py
+
+ADMIN2026 Secret Code
+
+tgly zuzd xsff ugrq

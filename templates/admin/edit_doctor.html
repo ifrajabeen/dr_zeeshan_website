@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card" data-aos="fade-up" style="border-radius: 20px; overflow: hidden;">
+                    <div style="background: linear-gradient(135deg, var(--teal), var(--aqua)); padding: 30px; color: white; text-align: center;">
+                        <i class="fas fa-user-md" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                        <h2 style="color: white; margin: 0;">Edit Doctor Profile</h2>
+                        <p style="color: white; opacity: 0.9; margin-top: 0.5rem;">
+                            Update Dr. Zeeshan's professional information
+                        </p>
+                    </div>
+                    
+                    <div style="padding: 40px;">
+                        <form method="POST" action="">
+                            {{ form.hidden_tag() }}
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    {{ form.name.label(class="form-label") }}
+                                    {{ form.name(class="form-control", placeholder="Dr. Zeeshan") }}
+                                    {% if form.name.errors %}
+                                        {% for error in form.name.errors %}
+                                            <span style="color: #F56565; font-size: 0.875rem;">{{ error }}</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group">
+                                    {{ form.title.label(class="form-label") }}
+                                    {{ form.title(class="form-control", placeholder="Clinical Psychologist") }}
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                {{ form.qualifications.label(class="form-label") }}
+                                {{ form.qualifications(class="form-control", rows=3, placeholder="Ph.D. in Clinical Psychology, M.Sc. Counseling Psychology") }}
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                                <div class="form-group">
+                                    {{ form.experience.label(class="form-label") }}
+                                    {{ form.experience(class="form-control", placeholder="15+ years") }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    {{ form.phone.label(class="form-label") }}
+                                    {{ form.phone(class="form-control", placeholder="+1 (555) 123-4567") }}
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                {{ form.email.label(class="form-label") }}
+                                {{ form.email(class="form-control", placeholder="dr.zeeshan@clinic.com") }}
+                            </div>
+                            
+                            <div class="form-group">
+                                {{ form.biography.label(class="form-label") }}
+                                {{ form.biography(class="form-control", rows=5, placeholder="Dr. Zeeshan is a highly experienced clinical psychologist...") }}
+                            </div>
+                            
+                            <div class="form-group">
+                                {{ form.specializations.label(class="form-label") }}
+                                {{ form.specializations(class="form-control", rows=3, placeholder="Anxiety Disorders, Depression, PTSD, Relationship Counseling") }}
+                                <small style="color: var(--text-light); display: block; margin-top: 5px;">
+                                    <i class="fas fa-info-circle"></i> 
+                                    Specializations ko comma (,) se separate karein
+                                </small>
+                            </div>
+                            
+                            <hr style="margin: 30px 0; border: none; border-top: 1px solid var(--gray);">
+                            
+                            <div style="display: flex; gap: 15px; justify-content: center;">
+                                {{ form.submit(class="btn btn-primary", style="padding: 12px 40px;") }}
+                                <a href="{{ url_for('admin.manage_appointments') }}" class="btn btn-outline" style="padding: 12px 40px;">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Preview Card -->
+                <div class="card" style="margin-top: 30px; background: var(--light-bg);" data-aos="fade-up">
+                    <div style="padding: 20px;">
+                        <h4 style="color: var(--teal); margin-bottom: 1rem;">Current Profile Preview</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px;">
+                            <strong>Name:</strong> <span>{{ doctor.name }}</span>
+                            <strong>Title:</strong> <span>{{ doctor.title }}</span>
+                            <strong>Experience:</strong> <span>{{ doctor.experience }}</span>
+                            <strong>Email:</strong> <span>{{ doctor.email }}</span>
+                            <strong>Phone:</strong> <span>{{ doctor.phone }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- About Hero -->
+<section style="background: linear-gradient(135deg, var(--dark-blue), var(--teal)); padding: 60px 0; color: var(--white);">
+    <div class="container text-center" data-aos="fade-up">
+        <h1 style="color: var(--white); font-size: 3rem; margin-bottom: 1rem;">About Dr. Zeeshan</h1>
+        <p style="font-size: 1.2rem; max-width: 700px; margin: 0 auto; opacity: 0.95;">
+            Dedicated to providing compassionate, evidence-based psychological care for over 15 years.
+        </p>
+    </div>
+</section>
+
+<!-- Doctor Profile -->
+<section class="section-padding">
+    <div class="container">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;">
+            <div data-aos="fade-right">
+                <img src="/static/images/dr-zeeshan.svg"  alt="Dr. Zeeshan - Clinical Psychologist" 
+                     style="width: 70%; border-radius: 20px; box-shadow: var(--shadow-lg);">
+            </div>
+            
+            <div data-aos="fade-left">
+                <h2 style="color: var(--teal); font-size: 2rem; margin-bottom: 1rem;">{{ doctor.name }}</h2>
+                <h3 style="color: var(--dark-blue); margin-bottom: 1.5rem;">{{ doctor.title }}</h3>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: var(--dark-blue); margin-bottom: 1rem;">Qualifications</h4>
+                    <p style="color: var(--text-light);">{{ doctor.qualifications }}</p>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: var(--dark-blue); margin-bottom: 1rem;">Experience</h4>
+                    <p style="color: var(--text-light);">{{ doctor.experience }} of clinical practice</p>
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: var(--dark-blue); margin-bottom: 1rem;">Biography</h4>
+                    <p style="color: var(--text-light); line-height: 1.8;">{{ doctor.biography }}</p>
+                </div>
+                  <div>
+                    <h4>Contact</h4>
+                    <p>Email: {{ doctor.email }}</p>
+                    <p>Phone: {{ doctor.phone }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Specializations -->
+<section class="section-padding" style="background: var(--light-bg);">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <h2 style="color: var(--teal); font-size: 2.5rem; margin-bottom: 1rem;">Specializations</h2>
+            <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 3rem;">
+                Areas of expertise and specialized treatment approaches
+            </p>
+        <!-- <h2>Specializations</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            {% for spec in specializations %}
+            <div class="card">
+                <h4>{{ spec }}</h4>
+            </div>
+            {% endfor %}
+        </div> -->
+        </div> 
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            {% for specialization in specializations %}
+            <div class="card" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div style="background: linear-gradient(135deg, var(--teal), var(--aqua)); 
+                                width: 50px; height: 50px; border-radius: 50%; 
+                                display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-check" style="color: var(--white); font-size: 1.5rem;"></i>
+                    </div>
+                    <h3 style="color: var(--dark-blue); margin: 0;">{{ specialization }}</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Approach -->
+<section class="section-padding">
+    <div class="container">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+            <div data-aos="fade-right">
+                <h2 style="color: var(--teal); font-size: 2rem; margin-bottom: 1.5rem;">Therapeutic Approach</h2>
+                <p style="color: var(--text-light); margin-bottom: 1rem; line-height: 1.8;">
+                    Dr. Zeeshan employs an integrative approach to therapy, combining evidence-based techniques 
+                    from Cognitive Behavioral Therapy (CBT), Psychodynamic Therapy, and Mindfulness-Based interventions.
+                </p>
+                <p style="color: var(--text-light); margin-bottom: 1rem; line-height: 1.8;">
+                    Every patient receives a personalized treatment plan tailored to their unique needs, goals, 
+                    and circumstances. Dr. Zeeshan believes in creating a safe, non-judgmental space where healing 
+                    and growth can flourish.
+                </p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;" data-aos="fade-left">
+                <div class="card text-center">
+                    <i class="fas fa-hands-helping" style="font-size: 2.5rem; color: var(--teal); margin-bottom: 1rem;"></i>
+                    <h4 style="color: var(--dark-blue);">Compassionate</h4>
+                </div>
+                <div class="card text-center">
+                    <i class="fas fa-flask" style="font-size: 2.5rem; color: var(--teal); margin-bottom: 1rem;"></i>
+                    <h4 style="color: var(--dark-blue);">Evidence-Based</h4>
+                </div>
+                <div class="card text-center">
+                    <i class="fas fa-user" style="font-size: 2.5rem; color: var(--teal); margin-bottom: 1rem;"></i>
+                    <h4 style="color: var(--dark-blue);">Patient-Centered</h4>
+                </div>
+                <div class="card text-center">
+                    <i class="fas fa-shield-alt" style="font-size: 2.5rem; color: var(--teal); margin-bottom: 1rem;"></i>
+                    <h4 style="color: var(--dark-blue);">Confidential</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

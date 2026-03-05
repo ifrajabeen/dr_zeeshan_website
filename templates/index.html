@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container hero-container">
+        <div class="hero-content" data-aos="fade-right">
+            <h1>Your Journey to Mental Wellness with {{ doctor.name }}</h1>
+            <p>{{ doctor.title }} with {{ doctor.experience }} of experience</p>
+            <div style="display: flex; gap: 1rem;">
+                <a href="{{ url_for('appointments.book_appointment') }}" class="btn btn-primary">Book Appointment</a>
+                <a href="{{ url_for('main.about') }}" class="btn btn-outline">Learn More</a>
+            </div>
+        </div>
+        <div class="hero-image" data-aos="fade-left">
+            <img src="/static/images/dr-zeeshan.svg"  alt="Dr. Zeeshan - Clinical Psychologist">
+        </div>
+    </div>
+</section>
+
+<!-- About Preview -->
+<section class="section-padding">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <h2 style="color: var(--teal); font-size: 2.5rem; margin-bottom: 1rem;">Meet {{ doctor.name }}<</h2>
+            <p>{{ doctor.qualifications }}</p>
+            <p>{{ doctor.biography[:200] }}...</p>
+            <!-- <p style="font-size: 1.1rem; color: var(--text-light); max-width: 800px; margin: 0 auto;">
+                With over 15 years of experience, Dr. Zeeshan offers personalized psychological care 
+                tailored to your unique needs and goals.
+            </p> -->
+        </div>
+        
+        <div class="services-grid" style="margin-top: 4rem;">
+            <div class="card service-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="service-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3 class="card-title">Individual Therapy</h3>
+                <p>One-on-one sessions focused on your personal growth and healing journey.</p>
+            </div>
+            
+            <div class="card service-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="card-title">Couples Counseling</h3>
+                <p>Strengthen your relationship with professional guidance and support.</p>
+            </div>
+            
+            <div class="card service-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="service-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="card-title">Anxiety & Depression</h3>
+                <p>Evidence-based treatments for mood disorders and anxiety conditions.</p>
+            </div>
+            
+            <div class="card service-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="service-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3 class="card-title">Stress Management</h3>
+                <p>Learn effective techniques to manage stress and improve quality of life.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section style="background: linear-gradient(135deg, var(--teal), var(--aqua)); padding: 60px 0; color: var(--white);">
+    <div class="container text-center" data-aos="zoom-in">
+        <h2 style="color: var(--white); font-size: 2.5rem; margin-bottom: 1rem;">Ready to Start Your Journey?</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.95;">
+            Take the first step towards better mental health today.
+        </p>
+        <a href="{{ url_for('appointments.book_appointment') }}" class="btn" style="background: var(--white); color: var(--teal); font-weight: 600; padding: 15px 40px;">
+            Schedule Your Appointment
+        </a>
+    </div>
+</section>
+
+<!-- Reviews Preview -->
+<section class="section-padding">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <h2 style="color: var(--teal); font-size: 2.5rem; margin-bottom: 1rem;">What Our Patients Say</h2>
+            <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 3rem;">
+                Real stories from patients who found hope and healing.
+            </p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            {% for review in reviews %}
+            <div class="review-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                <div class="rating">
+                    {% for i in range(5) %}
+                        {% if i < review.rating %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <p style="font-style: italic; margin-bottom: 1rem;">"{{ review.comment[:150] }}..."</p>
+                <p style="font-weight: 600; color: var(--teal);">- {{ review.patient.first_name }} {{ review.patient.last_name[0] }}.</p>
+            </div>
+            {% else %}
+            <div class="review-card" data-aos="fade-up">
+                <p>No reviews yet. Be the first to share your experience!</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center" style="margin-top: 3rem;" data-aos="fade-up">
+            <a href="{{ url_for('reviews.reviews') }}" class="btn btn-outline">Read All Reviews</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

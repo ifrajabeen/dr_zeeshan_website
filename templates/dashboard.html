@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<section class="dashboard-header">
+    <div class="container">
+        <div data-aos="fade-up">
+            <h1 style="color: var(--white); font-size: 2.5rem; margin-bottom: 0.5rem;">
+                Welcome, {{ current_user.first_name }}!
+            </h1>
+            <p style="color: var(--white); opacity: 0.95; font-size: 1.1rem;">
+                Manage your appointments and health journey
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <!-- Appointments Section - Sab ko dikhega -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2 style="color: var(--teal);">My Appointments</h2>
+            <a href="{{ url_for('appointments.book_appointment') }}" class="btn btn-primary">
+                <i class="fas fa-plus" style="margin-right: 0.5rem;"></i>Book New Appointment
+            </a>
+        </div>
+        
+        {% if appointments %}
+            <div class="appointment-table" data-aos="fade-up">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                            <th>Booked On</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ appointment.appointment_date.strftime('%B %d, %Y') }}</td>
+                            <td>{{ appointment.appointment_time }}</td>
+                            <td>{{ appointment.description[:50] }}{% if appointment.description|length > 50 %}...{% endif %}</td>
+                            <td>
+                                <span class="status-badge status-{{ appointment.status }}">
+                                    {{ appointment.status|upper }}
+                                </span>
+                            </td>
+                            <td>{{ appointment.created_at.strftime('%b %d, %Y') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="card text-center" data-aos="fade-up">
+                <i class="fas fa-calendar-check" style="font-size: 3rem; color: var(--teal); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--dark-blue); margin-bottom: 1rem;">No Appointments Yet</h3>
+                <p style="color: var(--text-light); margin-bottom: 2rem;">
+                    Start your journey to better mental health by booking your first appointment.
+                </p>
+                <a href="{{ url_for('appointments.book_appointment') }}" class="btn btn-primary">
+                    Book Your First Appointment
+                </a>
+            </div>
+        {% endif %}
+        
+        <!-- ✅ ADMIN SECTION - Sirf Admin ko dikhega -->
+        {% if current_user.is_authenticated and current_user.is_admin() %}
+        <div style="margin-top: 4rem; padding: 2rem; background: linear-gradient(135deg, #f0f9ff, #e6f7f5); border-radius: 20px;" data-aos="fade-up">
+            <h2 style="color: var(--teal); margin-bottom: 2rem; display: flex; align-items: center;">
+                <i class="fas fa-crown" style="margin-right: 10px; color: gold;"></i>
+                Admin Dashboard
+            </h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <!-- Edit Doctor Profile Card -->
+                <div class="card" style="border-left: 5px solid var(--teal); transition: transform 0.3s;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: var(--teal); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-user-md" style="color: white; font-size: 1.5rem;"></i>
+                        </div>
+                        <h3 style="color: var(--dark-blue); margin: 0;">Edit Doctor Profile</h3>
+                    </div>
+                    <p style="color: var(--text-light); margin-bottom: 1.5rem;">
+                        Update doctor's name, qualifications, experience, and biography
+                    </p>
+                    <a href="{{ url_for('admin.edit_doctor') }}" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-edit" style="margin-right: 0.5rem;"></i>Edit Profile
+                    </a>
+                </div>
+                
+                <!-- Manage Appointments Card -->
+                <div class="card" style="border-left: 5px solid var(--aqua); transition: transform 0.3s;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: var(--aqua); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-calendar-check" style="color: white; font-size: 1.5rem;"></i>
+                        </div>
+                        <h3 style="color: var(--dark-blue); margin: 0;">Manage Appointments</h3>
+                    </div>
+                    <p style="color: var(--text-light); margin-bottom: 1.5rem;">
+                        View, confirm, cancel or reschedule all patient appointments
+                    </p>
+                    <a href="{{ url_for('admin.manage_appointments') }}" class="btn" style="background: var(--aqua); color: white; width: 100%;">
+                        <i class="fas fa-cog" style="margin-right: 0.5rem;"></i>Manage Appointments
+                    </a>
+                </div>
+                
+                <!-- Manage Reviews Card -->
+                <div class="card" style="border-left: 5px solid var(--dark-blue); transition: transform 0.3s;">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="background: var(--dark-blue); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-star" style="color: white; font-size: 1.5rem;"></i>
+                        </div>
+                        <h3 style="color: var(--dark-blue); margin: 0;">Manage Reviews</h3>
+                    </div>
+                    <p style="color: var(--text-light); margin-bottom: 1.5rem;">
+                        Approve new reviews and manage patient feedback
+                    </p>
+                    <a href="{{ url_for('admin.manage_reviews') }}" class="btn" style="background: var(--dark-blue); color: white; width: 100%;">
+                        <i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>Manage Reviews
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Quick Stats for Admin -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem;">
+                <div style="background: white; padding: 1rem; border-radius: 10px; text-align: center;">
+                    <h4 style="color: var(--teal); font-size: 1.5rem; margin: 0;">{{ stats.total_appointments|default('0') }}</h4>
+                    <p style="color: var(--text-light); margin: 0;">Total Appointments</p>
+                </div>
+                <div style="background: white; padding: 1rem; border-radius: 10px; text-align: center;">
+                    <h4 style="color: var(--aqua); font-size: 1.5rem; margin: 0;">{{ stats.pending_appointments|default('0') }}</h4>
+                    <p style="color: var(--text-light); margin: 0;">Pending</p>
+                </div>
+                <div style="background: white; padding: 1rem; border-radius: 10px; text-align: center;">
+                    <h4 style="color: #48BB78; font-size: 1.5rem; margin: 0;">{{ stats.total_patients|default('0') }}</h4>
+                    <p style="color: var(--text-light); margin: 0;">Total Patients</p>
+                </div>
+                <div style="background: white; padding: 1rem; border-radius: 10px; text-align: center;">
+                    <h4 style="color: #F56565; font-size: 1.5rem; margin: 0;">{{ stats.pending_reviews|default('0') }}</h4>
+                    <p style="color: var(--text-light); margin: 0;">Pending Reviews</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Patient Resources - Sab ko dikhega -->
+        <div style="margin-top: 4rem;">
+            <h2 style="color: var(--teal); margin-bottom: 2rem;">Resources for Your Journey</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                <div class="card" data-aos="fade-up">
+                    <i class="fas fa-file-alt" style="font-size: 2rem; color: var(--teal); margin-bottom: 1rem;"></i>
+                    <h3 style="color: var(--dark-blue);">New Patient Forms</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        Complete your intake forms before your first visit.
+                    </p>
+                    <a href="#" style="color: var(--teal); font-weight: 600;">
+                        Download Forms <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                    </a>
+                </div>
+                
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fas fa-question-circle" style="font-size: 2rem; color: var(--teal); margin-bottom: 1rem;"></i>
+                    <h3 style="color: var(--dark-blue);">FAQs</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        Find answers to common questions about therapy.
+                    </p>
+                    <a href="#" style="color: var(--teal); font-weight: 600;">
+                        View FAQs <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                    </a>
+                </div>
+                
+                <div class="card" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fas fa-credit-card" style="font-size: 2rem; color: var(--teal); margin-bottom: 1rem;"></i>
+                    <h3 style="color: var(--dark-blue);">Billing & Insurance</h3>
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        Information about insurance coverage and payment options.
+                    </p>
+                    <a href="#" style="color: var(--teal); font-weight: 600;">
+                        Learn More <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
