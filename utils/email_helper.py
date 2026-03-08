@@ -1,161 +1,260 @@
 # from flask_mail import Message
-# from flask import current_app, render_template
-# import logging
-# import smtplib
-
-# # Logging setup
-# logging.basicConfig(level=logging.DEBUG)
+# from app import mail
 
 # def send_appointment_confirmation_email(patient_email, patient_name, appointment):
-#     """Appointment confirm hone par patient ko email bhejne ka function"""
-    
-#     print(f"📧 DEBUG: Sending confirmation email to patient: {patient_email}")
-    
-#     subject = "Your Appointment Confirmed - Dr. Zeeshan Clinic"
-    
-#     # HTML email body
-#     html_body = f"""
-#     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-#         <div style="background: linear-gradient(135deg, #2C7A7B, #4FD1C5); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-#             <h1 style="color: white; margin: 0;">Dr. Zeeshan Clinic</h1>
-#         </div>
-#         <div style="background: #F7FAFC; padding: 30px; border-radius: 0 0 10px 10px;">
-#             <h2 style="color: #1A365D;">Appointment Confirmed!</h2>
-#             <p style="color: #2D3748;">Dear <strong>{patient_name}</strong>,</p>
-#             <p style="color: #2D3748;">Your appointment has been confirmed with Dr. Zeeshan Ahmed.</p>
-            
-#             <div style="background: white; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #2C7A7B;">
-#                 <p style="margin: 5px 0;"><strong>📅 Date:</strong> {appointment.appointment_date}</p>
-#                 <p style="margin: 5px 0;"><strong>⏰ Time:</strong> {appointment.appointment_time}</p>
-#                 <p style="margin: 5px 0;"><strong>👨‍⚕️ Doctor:</strong> Dr. Zeeshan Ahmed</p>
-#             </div>
-            
-#             <div style="background: #E2E8F0; padding: 20px; border-radius: 10px; margin: 20px 0;">
-#                 <p style="margin: 5px 0;"><strong>📍 Location:</strong> 123 Wellness Street, Medical District</p>
-#                 <p style="margin: 5px 0;"><strong>📞 Phone:</strong> +1 (555) 123-4567</p>
-#             </div>
-            
-#             <p style="color: #718096; font-size: 14px;">
-#                 ⚠️ Please cancel at least 24 hours in advance if you need to reschedule.
-#             </p>
-            
-#             <hr style="border: none; border-top: 1px solid #E2E8F0; margin: 20px 0;">
-            
-#             <p style="color: #718096; text-align: center;">
-#                 Dr. Zeeshan Ahmed - Clinical Psychologist<br>
-#                 Helping you achieve mental wellness
-#             </p>
-#         </div>
-#     </div>
 #     """
-    
-#     # current_app se mail lo
-#     from flask_mail import Mail
-#     mail = Mail(current_app)
-    
-#     msg = Message(
-#         subject=subject,
-#         recipients=[patient_email],
-#         html=html_body
-#     )
-    
+#     Appointment confirm hone par patient ko email bhejne ka function
+#     """
 #     try:
+#         subject = "Appointment Confirmed - Dr. Zeeshan Clinic"
+        
+#         # HTML email template
+#         html_body = f"""
+#         <!DOCTYPE html>
+#         <html>
+#         <head>
+#             <style>
+#                 body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+#                 .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+#                 .header {{ background: #28a745; color: white; padding: 20px; text-align: center; }}
+#                 .content {{ padding: 20px; background: #f9f9f9; }}
+#                 .details {{ background: white; padding: 15px; border-radius: 5px; margin: 20px 0; }}
+#                 .footer {{ text-align: center; padding: 20px; color: #666; font-size: 12px; }}
+#             </style>
+#         </head>
+#         <body>
+#             <div class="container">
+#                 <div class="header">
+#                     <h2>Appointment Confirmed!</h2>
+#                 </div>
+#                 <div class="content">
+#                     <p>Dear {patient_name},</p>
+#                     <p>Your appointment has been <strong style="color: #28a745;">confirmed</strong>.</p>
+                    
+#                     <div class="details">
+#                         <h3>Appointment Details:</h3>
+#                         <p><strong>Date:</strong> {appointment.appointment_date}</p>
+#                         <p><strong>Time:</strong> {appointment.appointment_time}</p>
+#                         <p><strong>Doctor:</strong> {appointment.doctor.name}</p>
+#                     </div>
+                    
+#                     <p>Please arrive 10 minutes before your scheduled time.</p>
+#                     <p>If you need to reschedule, please contact us.</p>
+#                 </div>
+#                 <div class="footer">
+#                     <p>Dr. Zeeshan Clinic - Your Mental Wellness Partner</p>
+#                 </div>
+#             </div>
+#         </body>
+#         </html>
+#         """
+        
+#         # Plain text version
+#         text_body = f"""
+#         Dear {patient_name},
+        
+#         Your appointment has been CONFIRMED.
+        
+#         Appointment Details:
+#         Date: {appointment.appointment_date}
+#         Time: {appointment.appointment_time}
+#         Doctor: {appointment.doctor.name}
+        
+#         Please arrive 10 minutes before your scheduled time.
+        
+#         Dr. Zeeshan Clinic
+#         """
+        
+#         msg = Message(
+#             subject=subject,
+#             recipients=[patient_email],
+#             html=html_body,
+#             body=text_body
+#         )
+        
 #         mail.send(msg)
-#         print(f"✅ Email sent successfully to {patient_email}")
-#         return True  #✅ YEH ADD KARO!
+#         print(f"✅ Confirmation email sent to {patient_email}")
+#         return True
+        
 #     except Exception as e:
-#         print(f"❌ Error sending email to {patient_email}: {e}")
+#         print(f"❌ Failed to send confirmation email: {str(e)}")
 #         return False
 
 # def send_appointment_cancellation_email(patient_email, patient_name, appointment):
-#     """Appointment cancel hone par patient ko email bhejne ka function"""
-    
-#     print(f"📧 DEBUG: Sending cancellation email to patient: {patient_email}")
-    
-#     subject = "Appointment Cancelled - Dr. Zeeshan Clinic"
-    
-#     html_body = f"""
-#     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-#         <div style="background: #EF4444; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-#             <h1 style="color: white; margin: 0;">Dr. Zeeshan Clinic</h1>
-#         </div>
-#         <div style="background: #F7FAFC; padding: 30px; border-radius: 0 0 10px 10px;">
-#             <h2 style="color: #1A365D;">Appointment Cancelled</h2>
-#             <p style="color: #2D3748;">Dear <strong>{patient_name}</strong>,</p>
-#             <p style="color: #2D3748;">Your appointment on <strong>{appointment.appointment_date} at {appointment.appointment_time}</strong> has been cancelled.</p>
-            
-#             <p style="color: #2D3748;">If you wish to reschedule, please book a new appointment on our website.</p>
-            
-#             <div style="text-align: center; margin: 30px 0;">
-#                 <a href="http://localhost:5000/appointment" 
-#                    style="background: #2C7A7B; color: white; padding: 12px 30px; text-decoration: none; border-radius: 50px;">
-#                     Book New Appointment
-#                 </a>
-#             </div>
-            
-#             <hr style="border: none; border-top: 1px solid #E2E8F0; margin: 20px 0;">
-            
-#             <p style="color: #718096; text-align: center;">
-#                 For any questions, call us at +1 (555) 123-4567
-#             </p>
-#         </div>
-#     </div>
 #     """
-    
-#     # current_app se mail lo
-#     from flask_mail import Mail
-#     mail = Mail(current_app)
-    
-#     msg = Message(
-#         subject=subject,
-#         recipients=[patient_email],
-#         html=html_body
-#     )
-    
+#     Appointment cancel hone par patient ko email bhejne ka function
+#     """
 #     try:
-#         logging.debug("Attempting to send cancellation email...")
+#         subject = "Appointment Cancelled - Dr. Zeeshan Clinic"
+        
+#         # HTML email template
+#         html_body = f"""
+#         <!DOCTYPE html>
+#         <html>
+#         <head>
+#             <style>
+#                 body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+#                 .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+#                 .header {{ background: #dc3545; color: white; padding: 20px; text-align: center; }}
+#                 .content {{ padding: 20px; background: #f9f9f9; }}
+#                 .details {{ background: white; padding: 15px; border-radius: 5px; margin: 20px 0; }}
+#                 .footer {{ text-align: center; padding: 20px; color: #666; font-size: 12px; }}
+#             </style>
+#         </head>
+#         <body>
+#             <div class="container">
+#                 <div class="header">
+#                     <h2>Appointment Cancelled</h2>
+#                 </div>
+#                 <div class="content">
+#                     <p>Dear {patient_name},</p>
+#                     <p>Your appointment has been <strong style="color: #dc3545;">cancelled</strong>.</p>
+                    
+#                     <div class="details">
+#                         <h3>Appointment Details:</h3>
+#                         <p><strong>Date:</strong> {appointment.appointment_date}</p>
+#                         <p><strong>Time:</strong> {appointment.appointment_time}</p>
+#                         <p><strong>Doctor:</strong> {appointment.doctor.name}</p>
+#                     </div>
+                    
+#                     <p>If you have any questions, please contact us.</p>
+#                     <p>We apologize for any inconvenience caused.</p>
+#                 </div>
+#                 <div class="footer">
+#                     <p>Dr. Zeeshan Clinic - Your Mental Wellness Partner</p>
+#                 </div>
+#             </div>
+#         </body>
+#         </html>
+#         """
+        
+#         # Plain text version
+#         text_body = f"""
+#         Dear {patient_name},
+        
+#         Your appointment has been CANCELLED.
+        
+#         Appointment Details:
+#         Date: {appointment.appointment_date}
+#         Time: {appointment.appointment_time}
+#         Doctor: {appointment.doctor.name}
+        
+#         If you have any questions, please contact us.
+        
+#         Dr. Zeeshan Clinic
+#         """
+        
+#         msg = Message(
+#             subject=subject,
+#             recipients=[patient_email],
+#             html=html_body,
+#             body=text_body
+#         )
+        
 #         mail.send(msg)
-#         print(f"✅ Cancellation email sent successfully to {patient_email}")
+#         print(f"✅ Cancellation email sent to {patient_email}")
 #         return True
+        
 #     except Exception as e:
-#         print(f"❌ Error sending cancellation email to {patient_email}: {e}")
+#         print(f"❌ Failed to send cancellation email: {str(e)}")
 #         return False
 
+# def send_appointment_reminder_email(patient_email, patient_name, appointment):
+#     """
+#     Appointment se pehle reminder email bhejne ka function (optional)
+#     """
+#     try:
+#         subject = "Appointment Reminder - Dr. Zeeshan Clinic"
+        
+#         html_body = f"""
+#         <!DOCTYPE html>
+#         <html>
+#         <head>
+#             <style>
+#                 body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+#                 .container {{ max-width: 600px; margin: 0 auto; padding: 20px; }}
+#                 .header {{ background: #17a2b8; color: white; padding: 20px; text-align: center; }}
+#                 .content {{ padding: 20px; background: #f9f9f9; }}
+#                 .details {{ background: white; padding: 15px; border-radius: 5px; margin: 20px 0; }}
+#                 .footer {{ text-align: center; padding: 20px; color: #666; font-size: 12px; }}
+#             </style>
+#         </head>
+#         <body>
+#             <div class="container">
+#                 <div class="header">
+#                     <h2>Appointment Reminder</h2>
+#                 </div>
+#                 <div class="content">
+#                     <p>Dear {patient_name},</p>
+#                     <p>This is a reminder for your upcoming appointment.</p>
+                    
+#                     <div class="details">
+#                         <h3>Appointment Details:</h3>
+#                         <p><strong>Date:</strong> {appointment.appointment_date}</p>
+#                         <p><strong>Time:</strong> {appointment.appointment_time}</p>
+#                         <p><strong>Doctor:</strong> {appointment.doctor.name}</p>
+#                     </div>
+                    
+#                     <p>Please arrive 10 minutes before your scheduled time.</p>
+#                 </div>
+#                 <div class="footer">
+#                     <p>Dr. Zeeshan Clinic - Your Mental Wellness Partner</p>
+#                 </div>
+#             </div>
+#         </body>
+#         </html>
+#         """
+        
+#         msg = Message(
+#             subject=subject,
+#             recipients=[patient_email],
+#             html=html_body
+#         )
+        
+#         mail.send(msg)
+#         print(f"✅ Reminder email sent to {patient_email}")
+#         return True
+        
+#     except Exception as e:
+#         print(f"❌ Failed to send reminder email: {str(e)}")
+#         return False
+# def send_appointment_cancellation_email(patient_email, patient_name, appointment):
+#     try:
+#         subject = "Appointment Cancelled - Dr. Zeeshan Clinic"
+#         html_body = f"<h2>Appointment Cancelled</h2><p>Dear {patient_name},</p><p>Your appointment has been cancelled.</p>"
+#         msg = Message(subject, recipients=[patient_email], html=html_body)
+#         mail.send(msg)
+#         return True
+#     except:
+#         return False
 
 from flask_mail import Message
-from flask import current_app
+from app import mail
 
 def send_appointment_confirmation_email(patient_email, patient_name, appointment):
-    """Appointment confirm hone par patient ko email bhejo"""
-    
-    print(f"Sending email to: {patient_email}")
-    
-    subject = "Appointment Confirmed - Dr. Zeeshan Clinic"
-    
-    # Simple text email (HTML ki zaroorat nahi)
-    body = f"""
-    Dear {patient_name},
-    
-    Your appointment has been confirmed!
-    
-    Date: {appointment.appointment_date}
-    Time: {appointment.appointment_time}
-    Doctor: Dr. Zeeshan Ahmed
-    
-    Thanks,
-    Dr. Zeeshan Clinic
-    """
-    
-    # Mail object banao
-    from flask_mail import Mail
-    mail = Mail(current_app)
-    
-    msg = Message(subject, recipients=[patient_email], body=body)
-    
+    """Appointment confirm hone par email"""
     try:
+        msg = Message(
+            subject="Appointment Confirmed - Dr. Zeeshan Clinic",
+            recipients=[patient_email],
+            html=f"<h2>Appointment Confirmed!</h2><p>Dear {patient_name},</p><p>Your appointment has been confirmed.</p>"
+        )
         mail.send(msg)
-        print(f"✅ Email sent to {patient_email}")
         return True
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"Email error: {e}")
+        return False
+
+def send_appointment_cancellation_email(patient_email, patient_name, appointment):
+    """Appointment cancel hone par email"""
+    try:
+        msg = Message(
+            subject="Appointment Cancelled - Dr. Zeeshan Clinic",
+            recipients=[patient_email],
+            html=f"<h2>Appointment Cancelled</h2><p>Dear {patient_name},</p><p>Your appointment has been cancelled.</p>"
+        )
+        mail.send(msg)
+        return True
+    except Exception as e:
+        print(f"Email error: {e}")
         return False

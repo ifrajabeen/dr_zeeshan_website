@@ -1,19 +1,36 @@
 <footer class="footer">
     <div class="container">
         <div class="footer-grid">
+            <!-- About Section -->
             <div data-aos="fade-up">
-                <h4 class="footer-title">Dr. Zeeshan Clinic</h4>
+                <h4 class="footer-title">{{ settings.clinic_name or 'Dr. Zeeshan Ahmed' }}</h4>
                 <p style="color: var(--white); opacity: 0.9; margin-bottom: 1.5rem;">
-                    Providing compassionate, professional mental health care to help you achieve emotional wellness and balance.
+                    {{ settings.footer_description or 'Providing compassionate, professional mental health care to help you achieve emotional wellness and balance.' }}
                 </p>
                 <div style="display: flex; gap: 1rem;">
-                    <a href="#" style="color: var(--white); font-size: 1.2rem;"><i class="fab fa-facebook"></i></a>
-                    <a href="#" style="color: var(--white); font-size: 1.2rem;"><i class="fab fa-twitter"></i></a>
-                    <a href="#" style="color: var(--white); font-size: 1.2rem;"><i class="fab fa-instagram"></i></a>
-                    <a href="#" style="color: var(--white); font-size: 1.2rem;"><i class="fab fa-linkedin"></i></a>
-                </div>
+                {% if settings.facebook_url %}
+                <a href="{{ settings.facebook_url }}" target="_blank"><i class="fab fa-facebook"></i></a>
+                {% endif %}
+                
+                {% if settings.twitter_url %}
+                <a href="{{ settings.twitter_url }}" target="_blank"><i class="fab fa-twitter"></i></a>
+                {% else %}
+                <!-- Twitter icon default show karo with # link -->
+                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                {% endif %}
+                
+                {% if settings.instagram_url %}
+                <a href="{{ settings.instagram_url }}" target="_blank"><i class="fab fa-instagram"></i></a>
+                {% endif %}
+                
+                {% if settings.linkedin_url %}
+                <a href="{{ settings.linkedin_url }}" target="_blank"><i class="fab fa-linkedin"></i></a>
+                {% endif %}
+            </div>
+                
             </div>
             
+            <!-- Quick Links -->
             <div data-aos="fade-up" data-aos-delay="100">
                 <h4 class="footer-title">Quick Links</h4>
                 <ul class="footer-links">
@@ -21,33 +38,45 @@
                     <li><a href="{{ url_for('main.about') }}">About Dr. Zeeshan</a></li>
                     <li><a href="{{ url_for('appointments.book_appointment') }}">Book Appointment</a></li>
                     <li><a href="{{ url_for('reviews.reviews') }}">Patient Reviews</a></li>
+                    {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('appointments.dashboard') }}">My Dashboard</a></li>
+                    {% endif %}
                 </ul>
             </div>
             
+            <!-- Services -->
             <div data-aos="fade-up" data-aos-delay="200">
                 <h4 class="footer-title">Services</h4>
                 <ul class="footer-links">
+                    {% for service in services[:5] %}
+                    <li><a href="#">{{ service.title }}</a></li>
+                    {% else %}
                     <li><a href="#">Individual Therapy</a></li>
                     <li><a href="#">Couples Counseling</a></li>
+                    <li><a href="#">Child Psychology</a></li>
                     <li><a href="#">Anxiety Treatment</a></li>
-                    <li><a href="#">Depression Therapy</a></li>
-                    <li><a href="#">Stress Management</a></li>
+                    <li><a href="#">Depression Counseling</a></li>
+                    {% endfor %}
                 </ul>
             </div>
             
+            <!-- Contact Info - SIRF SETTINGS SE LO -->
             <div data-aos="fade-up" data-aos-delay="300">
                 <h4 class="footer-title">Contact Info</h4>
                 <ul class="footer-links">
-                    <li><i class="fas fa-map-marker-alt" style="margin-right: 10px; color: var(--aqua);"></i> 123 Wellness Street, Medical District</li>
-                    <li><i class="fas fa-phone" style="margin-right: 10px; color: var(--aqua);"></i> +1 (555) 123-4567</li>
-                    <li><i class="fas fa-envelope" style="margin-right: 10px; color: var(--aqua);"></i> contact@drzeeshanclinic.com</li>
-                    <li><i class="fas fa-clock" style="margin-right: 10px; color: var(--aqua);"></i> Mon-Fri: 9:00 AM - 6:00 PM</li>
+                    <li><i class="fas fa-map-marker-alt" style="margin-right: 10px; color: var(--aqua);"></i> {{ settings.address or '123 Main Street, Medical District, City, Country' }}</li>
+                    <li><i class="fas fa-phone" style="margin-right: 10px; color: var(--aqua);"></i> {{ settings.phone_primary or '03244626292' }}</li>
+                    <li><i class="fas fa-envelope" style="margin-right: 10px; color: var(--aqua);"></i> {{ settings.email_contact or 'dr.zeeshan@clinic.com' }}</li>
+                    <li><i class="fas fa-clock" style="margin-right: 10px; color: var(--aqua);"></i> {{ settings.working_hours or 'Mon-Fri: 9AM-5PM, Sat: 10AM-2PM' }}</li>
+                    {% if settings.consultation_fee %}
+                    <li><i class="fas fa-dollar-sign" style="margin-right: 10px; color: var(--aqua);"></i> {{ settings.consultation_fee }}</li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2024 Dr. Zeeshan - Clinical Psychologist. All rights reserved.</p>
+            <p>&copy; {{ current_year }} {{ settings.clinic_name or 'Dr. Zeeshan Ahmed' }}. All rights reserved.</p>
         </div>
     </div>
 </footer>

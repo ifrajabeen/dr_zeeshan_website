@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="hero-image" data-aos="fade-left">
-            <img src="/static/images/dr-zeeshan.svg"  alt="Dr. Zeeshan - Clinical Psychologist">
+            <img src="/static/images/dr-zeeshan.svg" alt="Dr. Zeeshan - Clinical Psychologist">
         </div>
     </div>
 </section>
@@ -22,47 +22,38 @@
 <section class="section-padding">
     <div class="container">
         <div class="text-center" data-aos="fade-up">
-            <h2 style="color: var(--teal); font-size: 2.5rem; margin-bottom: 1rem;">Meet {{ doctor.name }}<</h2>
+            <h2 style="color: var(--teal); font-size: 2.5rem; margin-bottom: 1rem;">Meet {{ doctor.name }}</h2>
             <p>{{ doctor.qualifications }}</p>
             <p>{{ doctor.biography[:200] }}...</p>
-            <!-- <p style="font-size: 1.1rem; color: var(--text-light); max-width: 800px; margin: 0 auto;">
-                With over 15 years of experience, Dr. Zeeshan offers personalized psychological care 
-                tailored to your unique needs and goals.
-            </p> -->
         </div>
         
+        <!-- ✅ DYNAMIC SERVICES SECTION - REPLACED HARDCODED SERVICES -->
         <div class="services-grid" style="margin-top: 4rem;">
-            <div class="card service-card" data-aos="fade-up" data-aos-delay="100">
+            {% for service in services %}
+            <div class="card service-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                <div class="service-icon">
+                    <i class="fas {{ service.icon }}"></i>
+                </div>
+                <h3 class="card-title">{{ service.title }}</h3>
+                <p>{{ service.description }}</p>
+            </div>
+            {% else %}
+            <!-- Fallback if no services in database -->
+            <div class="card service-card">
                 <div class="service-icon">
                     <i class="fas fa-heart"></i>
                 </div>
                 <h3 class="card-title">Individual Therapy</h3>
                 <p>One-on-one sessions focused on your personal growth and healing journey.</p>
             </div>
-            
-            <div class="card service-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="card service-card">
                 <div class="service-icon">
                     <i class="fas fa-users"></i>
                 </div>
                 <h3 class="card-title">Couples Counseling</h3>
                 <p>Strengthen your relationship with professional guidance and support.</p>
             </div>
-            
-            <div class="card service-card" data-aos="fade-up" data-aos-delay="300">
-                <div class="service-icon">
-                    <i class="fas fa-brain"></i>
-                </div>
-                <h3 class="card-title">Anxiety & Depression</h3>
-                <p>Evidence-based treatments for mood disorders and anxiety conditions.</p>
-            </div>
-            
-            <div class="card service-card" data-aos="fade-up" data-aos-delay="400">
-                <div class="service-icon">
-                    <i class="fas fa-leaf"></i>
-                </div>
-                <h3 class="card-title">Stress Management</h3>
-                <p>Learn effective techniques to manage stress and improve quality of life.</p>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>

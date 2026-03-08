@@ -38,10 +38,12 @@
                     <h4 style="color: var(--dark-blue); margin-bottom: 1rem;">Biography</h4>
                     <p style="color: var(--text-light); line-height: 1.8;">{{ doctor.biography }}</p>
                 </div>
-                  <div>
+                <div>
                     <h4>Contact</h4>
-                    <p>Email: {{ doctor.email }}</p>
-                    <p>Phone: {{ doctor.phone }}</p>
+                    <!-- 🔴 CHANGE THESE LINES - Use settings instead of doctor fields -->
+                    <p>Email: <span style="color: var(--teal);">{{ settings.email_contact or doctor.email }}</span></p>
+                    <p>Phone: <span style="color: var(--teal);">{{ settings.phone_primary or doctor.phone }}</span></p>
+                    <!-- ✅ This way, if settings exist they'll be used, otherwise fallback to doctor fields -->
                 </div>
             </div>
         </div>
@@ -56,29 +58,31 @@
             <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 3rem;">
                 Areas of expertise and specialized treatment approaches
             </p>
-        <!-- <h2>Specializations</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-            {% for spec in specializations %}
-            <div class="card">
-                <h4>{{ spec }}</h4>
-            </div>
-            {% endfor %}
-        </div> -->
         </div> 
         
+        <!-- 🔴 FIX THIS PART - The variable 'specializations' doesn't exist -->
+        <!-- Replace with doctor.specializations split into list -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
-            {% for specialization in specializations %}
-            <div class="card" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <div style="background: linear-gradient(135deg, var(--teal), var(--aqua)); 
-                                width: 50px; height: 50px; border-radius: 50%; 
-                                display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-check" style="color: var(--white); font-size: 1.5rem;"></i>
+            {% if doctor and doctor.specializations %}
+                {% set specializations_list = doctor.specializations.split(', ') %}
+                {% for specialization in specializations_list %}
+                <div class="card" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="background: linear-gradient(135deg, var(--teal), var(--aqua)); 
+                                    width: 50px; height: 50px; border-radius: 50%; 
+                                    display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-check" style="color: var(--white); font-size: 1.5rem;"></i>
+                        </div>
+                        <h3 style="color: var(--dark-blue); margin: 0;">{{ specialization }}</h3>
                     </div>
-                    <h3 style="color: var(--dark-blue); margin: 0;">{{ specialization }}</h3>
                 </div>
-            </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <!-- Fallback if no specializations -->
+                <div class="card">
+                    <p>Specializations information not available</p>
+                </div>
+            {% endif %}
         </div>
     </div>
 </section>
