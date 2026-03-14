@@ -141,55 +141,35 @@ class Setting(db.Model):
     __tablename__ = 'settings'
     
     id = db.Column(db.Integer, primary_key=True)
-    key = db.Column(db.String(100), unique=True, nullable=False)
+    key = db.Column(db.String(50), unique=True, nullable=False)
     value = db.Column(db.Text, nullable=True)
-    value_type = db.Column(db.String(20), default='text')  # text, number, email, phone, image
-    description = db.Column(db.String(200), nullable=True)  # Optional description for admin panel
+    value_type = db.Column(db.String(20), default='string')
+    description = db.Column(db.String(200))
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
-    def __repr__(self):
-        return f'<Setting {self.key}: {self.value}>'
-    
-    @classmethod
-    def get(cls, key, default=None):
-        """Get a setting value by key"""
-        setting = cls.query.filter_by(key=key).first()
-        return setting.value if setting else default
-    
-    @classmethod
-    def set(cls, key, value, value_type='text', description=None):
-        """Set a setting value"""
-        setting = cls.query.filter_by(key=key).first()
-        if setting:
-            setting.value = value
-            setting.value_type = value_type
-            if description:
-                setting.description = description
-        else:
-            setting = cls(key=key, value=value, value_type=value_type, description=description)
-            db.session.add(setting)
-        db.session.commit()
-        return setting
     
     @classmethod
     def get_all_dict(cls):
-        """Get all settings as a dictionary"""
+        """Get all settings as dictionary"""
         settings = {}
-        for setting in cls.query.all():
-            settings[setting.key] = setting.value
+        try:
+            for setting in cls.query.all():
+                settings[setting.key] = setting.value
+        except:
+            # Table might not exist yet
+            pass
         return settings
-
 # ✅ NEW: Service model for dynamic services
 class Service(db.Model):
     __tablename__ = 'services'
     
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    icon = db.Column(db.String(50), default='fa-heartbeat')  # Font Awesome icon class
-    order = db.Column(db.Integer, default=0)  # For ordering services
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    icon = db.Column(db.String(50))
+    url = db.Column(db.String(200))
+    order = db.Column(db.Integer, default=0)
     is_active = db.Column(db.Boolean, default=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
-    def __repr__(self):
-        return f'<Service {self.title}>'
+    @classmethod
+    def get_active_services(cls):
+        return cls.query.filter_by(is_active=True).order_by(cls.order).all()

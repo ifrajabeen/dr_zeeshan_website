@@ -1,12 +1,13 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
-from models.models import Appointment, User, Review, Doctor, Setting, Service  # ✅ Added Setting, Service
-from forms.forms import UpdateAppointmentStatusForm, DoctorProfileForm, AdminProfileForm, SettingForm, ServiceForm  # ✅ Added SettingForm, ServiceForm
-from utils.email_helper import send_appointment_confirmation_email, send_appointment_cancellation_email  # ✅ Uncommented cancellation email
+from models.models import Appointment, User, Review, Doctor, Setting, Service  
+from forms.forms import UpdateAppointmentStatusForm, DoctorProfileForm, AdminProfileForm, SettingForm, ServiceForm 
+from utils.email_helper import send_confirmation_email, send_completion_email
 from app import db
 from utils.decorators import admin_required
 
 admin_bp = Blueprint('admin', __name__)
+
 
 # ========== ADMIN DASHBOARD ==========
 @admin_bp.route('/admin/dashboard')
@@ -43,6 +44,7 @@ def manage_appointments():
                          appointments=appointments, 
                          form=form)
 
+
 @admin_bp.route('/admin/appointment/<int:appointment_id>/update', methods=['POST'])
 @login_required
 @admin_required
@@ -56,46 +58,33 @@ def update_appointment_status(appointment_id):
         appointment.status = new_status
         db.session.commit()
         
-        print(f"🔍 DEBUG: Appointment {appointment_id} status changed to {new_status}")
+        # Patient details
+        patient = appointment.patient
+        patient_email = patient.email
+        patient_name = patient.first_name
         
-        # ✅ Email send karo jab status confirm ho
+        # ✅ CONFIRMED - Email bhejo
         if new_status == 'confirmed' and old_status != 'confirmed':
-            patient_email = appointment.patient.email
-            patient_name = appointment.patient.first_name
-            
-            print(f"🔍 DEBUG: Confirmation email will be sent to PATIENT: {patient_email}")
-            
-            result = send_appointment_confirmation_email(
-                patient_email=patient_email,
-                patient_name=patient_name,
-                appointment=appointment
-            )
-            
-            if result:
-                flash(f'Appointment confirmed! Email sent to patient: {patient_email}', 'success')
+            email_sent = send_confirmation_email(patient_email, patient_name, appointment)
+            if email_sent:
+                flash(f'✅ Appointment confirmed! Email sent to {patient_email}', 'success')
             else:
-                flash(f'Appointment confirmed but EMAIL FAILED to send to {patient_email}!', 'danger')
+                flash(f'⚠️ Appointment confirmed but email failed!', 'warning')
         
-        # ✅ Email send karo jab status cancel ho
-        elif new_status == 'cancelled' and old_status != 'cancelled':
-            patient_email = appointment.patient.email
-            patient_name = appointment.patient.first_name
-            
-            print(f"🔍 DEBUG: Cancellation email will be sent to PATIENT: {patient_email}")
-            
-            result = send_appointment_cancellation_email(
-                patient_email=patient_email,
-                patient_name=patient_name,
-                appointment=appointment
-            )
-            
-            if result:
-                flash(f'Appointment cancelled. Email sent to patient: {patient_email}', 'warning')
+        # ✅ COMPLETED - Email bhejo
+        elif new_status == 'completed' and old_status != 'completed':
+            email_sent = send_completion_email(patient_email, patient_name, appointment)
+            if email_sent:
+                flash(f'✅ Appointment completed! Thank you email sent', 'success')
             else:
-                flash(f'Appointment cancelled but EMAIL FAILED to send to {patient_email}!', 'danger')
+                flash(f'⚠️ Appointment completed but email failed!', 'warning')
+        
+        # ✅ CANCELLED
+        elif new_status == 'cancelled':
+            flash(f'❌ Appointment cancelled', 'warning')
         
         else:
-            flash(f'Appointment status updated to {new_status}.', 'success')
+            flash(f'Appointment status updated to {new_status}', 'info')
     
     return redirect(url_for('admin.manage_appointments'))
 
