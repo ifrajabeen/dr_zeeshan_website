@@ -31,13 +31,7 @@
                             <span class="status-badge status-{{ appointment.status }}">
                                 {{ appointment.status|upper }}
                             </span>
-                            Phir template mein:
-
-
-                            <span class="email-status email-sent">
-                                <i class="fas fa-check-circle"></i> Email sent
-                            </span>
-                             {% if appointment.status == 'confirmed' %}
+                            {% if appointment.status == 'confirmed' %}
         <br>
         <span style="color: #10B981; font-size: 11px; display: inline-block; margin-top: 5px;">
             <i class="fas fa-check-circle"></i> Email sent
