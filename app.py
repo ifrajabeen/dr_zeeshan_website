@@ -24,13 +24,25 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['WTF_CSRF_ENABLED'] = True
     
-    # Email Configuration
-    app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
-    app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT', 587))
-    app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS', 'True').lower() == 'true'
-    app.config['MAIL_USERNAME'] = os.getenv('EMAIL_USER')
-    app.config['MAIL_PASSWORD'] = os.getenv('EMAIL_PASS')
-    app.config['MAIL_DEFAULT_SENDER'] = os.getenv('EMAIL_USER')
+    # Email configuration
+    mail_server = os.getenv('MAIL_SERVER', 'smtp.gmail.com').strip()
+    mail_port = int(os.getenv('MAIL_PORT', 587))
+    mail_use_tls = os.getenv('MAIL_USE_TLS', 'True').strip().lower() == 'true'
+    mail_default_sender = os.getenv('MAIL_DEFAULT_SENDER', 'your-email@gmail.com').strip()
+    mail_username = os.getenv('MAIL_USERNAME', '').strip()
+    mail_password = os.getenv('MAIL_PASSWORD', '').strip()
+
+    # Common placeholder usernames break SMTP login; fallback to sender email.
+    placeholder_usernames = {'', 'your-email@gmail.com', 'aapka_brevo_email@example.com'}
+    if mail_username in placeholder_usernames:
+        mail_username = mail_default_sender
+
+    app.config['MAIL_SERVER'] = mail_server
+    app.config['MAIL_PORT'] = mail_port
+    app.config['MAIL_USE_TLS'] = mail_use_tls
+    app.config['MAIL_USERNAME'] = mail_username
+    app.config['MAIL_PASSWORD'] = mail_password
+    app.config['MAIL_DEFAULT_SENDER'] = mail_default_sender
     
     # Initialize extensions with app
     db.init_app(app)
