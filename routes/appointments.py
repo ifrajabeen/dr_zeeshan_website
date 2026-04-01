@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from app import db
 from models.models import Appointment, Doctor
 from forms.forms import AppointmentForm
+from utils.email_helper import send_appointment_booking_email
 # from datetime import datetime
 
 appointments_bp = Blueprint('appointments', __name__)
@@ -24,8 +25,17 @@ def book_appointment():
         )
         db.session.add(appointment)
         db.session.commit()
+
+        booking_email_sent = send_appointment_booking_email(
+            patient_email=current_user.email,
+            patient_name=current_user.first_name,
+            appointment=appointment,
+        )
         
-        flash('Appointment booked successfully! We will confirm it shortly.', 'success')
+        if booking_email_sent:
+            flash('Appointment booked successfully! A confirmation email has been sent.', 'success')
+        else:
+            flash('Appointment booked successfully, but confirmation email could not be sent.', 'warning')
         return redirect(url_for('main.index'))
     
     return render_template('appointment.html', form=form, doctor=doctor, title='Book Appointment')
