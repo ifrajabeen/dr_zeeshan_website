@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-padding">
+    <div class="container">
+        <h1 style="color: var(--teal);">Pending Questions</h1>
+        
+        {% for question in questions %}
+        <div class="card" style="margin-bottom: 1rem;">
+            <div class="card-body">
+                <p><strong>Question:</strong> {{ question.question }}</p>
+                <p><strong>Asked by:</strong> {{ question.asked_by.first_name }}</p>
+                <p><strong>Date:</strong> {{ question.created_at.strftime('%Y-%m-%d') }}</p>
+                <a href="{{ url_for('faq.answer_question', question_id=question.id) }}" class="btn btn-primary">Answer</a>
+                <a href="{{ url_for('faq.delete_question', question_id=question.id) }}" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

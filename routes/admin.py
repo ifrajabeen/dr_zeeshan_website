@@ -5,6 +5,7 @@ from forms.forms import UpdateAppointmentStatusForm, DoctorProfileForm, AdminPro
 from utils.email_helper import send_confirmation_email, send_completion_email
 from app import db
 from utils.decorators import admin_required
+from flask import jsonify
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -14,17 +15,15 @@ admin_bp = Blueprint('admin', __name__)
 @login_required
 @admin_required
 def admin_dashboard():
-    # Stats for dashboard
     stats = {
         'total_appointments': Appointment.query.count(),
         'pending_appointments': Appointment.query.filter_by(status='pending').count(),
         'total_patients': User.query.filter_by(role='patient').count(),
         'pending_reviews': Review.query.filter_by(is_approved=False).count(),
-        'total_services': Service.query.count(),  # ✅ Added services count
-        'total_settings': Setting.query.count()   # ✅ Added settings count
+        'total_services': Service.query.count(),
+        'total_settings': Setting.query.count()
     }
     
-    # Recent 5 appointments
     recent_appointments = Appointment.query.order_by(
         Appointment.created_at.desc()
     ).limit(5).all()
@@ -32,6 +31,7 @@ def admin_dashboard():
     return render_template('admin/admin_dashboard.html', 
                          stats=stats, 
                          recent_appointments=recent_appointments)
+
 
 # ========== MANAGE APPOINTMENTS ==========
 @admin_bp.route('/admin/appointments')
@@ -65,11 +65,21 @@ def update_appointment_status(appointment_id):
         
         # ✅ CONFIRMED - Email bhejo
         if new_status == 'confirmed' and old_status != 'confirmed':
-            email_sent = send_confirmation_email(patient_email, patient_name, appointment)
-            if email_sent:
+            print("=" * 50)
+            print(f"📧 SENDING CONFIRMATION EMAIL")
+            print(f"   To: {patient_email}")
+            print(f"   Name: {patient_name}")
+            print(f"   Appointment ID: {appointment.id}")
+            print("=" * 50)
+            
+            result = send_confirmation_email(patient_email, patient_name, appointment)
+            
+            print(f"📧 RESULT: {result}")
+            
+            if result:
                 flash(f'✅ Appointment confirmed! Email sent to {patient_email}', 'success')
             else:
-                flash(f'⚠️ Appointment confirmed but email failed!', 'warning')
+                flash(f'⚠️ Appointment confirmed but email failed!', 'danger')
         
         # ✅ COMPLETED - Email bhejo
         elif new_status == 'completed' and old_status != 'completed':
@@ -88,6 +98,7 @@ def update_appointment_status(appointment_id):
     
     return redirect(url_for('admin.manage_appointments'))
 
+
 # ========== MANAGE REVIEWS ==========
 @admin_bp.route('/admin/reviews')
 @login_required
@@ -99,6 +110,7 @@ def manage_reviews():
                          pending_reviews=pending, 
                          approved_reviews=approved)
 
+
 @admin_bp.route('/admin/review/<int:review_id>/approve')
 @login_required
 @admin_required
@@ -109,27 +121,28 @@ def approve_review(review_id):
     flash('Review approved successfully!', 'success')
     return redirect(url_for('admin.manage_reviews'))
 
+
 @admin_bp.route('/admin/review/<int:review_id>/disapprove')
 @login_required
 @admin_required
 def disapprove_review(review_id):
-    """Approved review ko wapis pending mein kar do"""
     review = Review.query.get_or_404(review_id)
     review.is_approved = False
     db.session.commit()
     flash('Review moved back to pending!', 'warning')
     return redirect(url_for('admin.manage_reviews'))
 
+
 @admin_bp.route('/admin/review/<int:review_id>/delete')
 @login_required
 @admin_required
 def delete_review(review_id):
-    """Review ko permanently delete kar do"""
     review = Review.query.get_or_404(review_id)
     db.session.delete(review)
     db.session.commit()
     flash('Review deleted successfully!', 'success')
     return redirect(url_for('admin.manage_reviews'))
+
 
 # ========== EDIT DOCTOR PROFILE ==========
 @admin_bp.route('/admin/doctor/edit', methods=['GET', 'POST'])
@@ -165,26 +178,23 @@ def edit_doctor():
     
     return render_template('admin/edit_doctor.html', form=form, doctor=doctor)
 
+
 # ========== ADMIN PROFILE ==========
 @admin_bp.route('/admin/profile', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def admin_profile():
-    """Admin apni profile update karne ka page"""
     form = AdminProfileForm()
     
     if form.validate_on_submit():
-        # Current password verify karo agar change kar raha hai
         if form.current_password.data:
             if not current_user.verify_password(form.current_password.data):
                 flash('Current password is incorrect!', 'danger')
                 return redirect(url_for('admin.admin_profile'))
             
-            # New password set karo
             if form.new_password.data:
                 current_user.password = form.new_password.data
         
-        # Update basic info
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
         current_user.username = form.username.data
@@ -195,7 +205,6 @@ def admin_profile():
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('admin.admin_profile'))
     
-    # GET request - form mein existing data bharo
     if request.method == 'GET':
         form.first_name.data = current_user.first_name
         form.last_name.data = current_user.last_name
@@ -205,22 +214,19 @@ def admin_profile():
     
     return render_template('admin/profile.html', form=form, title='Admin Profile')
 
-# ========== NEW: WEBSITE SETTINGS MANAGEMENT ==========
+
+# ========== WEBSITE SETTINGS MANAGEMENT ==========
 @admin_bp.route('/admin/settings', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def settings():
-    """Website settings manage karne ka page"""
-    # Get all settings as a dictionary
     settings_dict = Setting.get_all_dict()
     
     if request.method == 'POST':
-        # Update each setting from form data
         for key in settings_dict.keys():
             if key in request.form:
                 Setting.set(key, request.form[key])
         
-        # Also check for any new settings that might be in form but not in dict
         for key in request.form:
             if key != 'csrf_token' and key not in settings_dict:
                 Setting.set(key, request.form[key])
@@ -230,20 +236,20 @@ def settings():
     
     return render_template('admin/settings.html', settings=settings_dict)
 
-# ========== NEW: SERVICES MANAGEMENT ==========
+
+# ========== SERVICES MANAGEMENT ==========
 @admin_bp.route('/admin/services')
 @login_required
 @admin_required
 def manage_services():
-    """All services ki list"""
     services = Service.query.order_by(Service.order).all()
     return render_template('admin/services.html', services=services)
+
 
 @admin_bp.route('/admin/services/add', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def add_service():
-    """Naya service add karo"""
     form = ServiceForm()
     if form.validate_on_submit():
         service = Service(
@@ -260,11 +266,11 @@ def add_service():
     
     return render_template('admin/add_service.html', form=form)
 
+
 @admin_bp.route('/admin/services/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def edit_service(id):
-    """Service edit karo"""
     service = Service.query.get_or_404(id)
     form = ServiceForm(obj=service)
     
@@ -280,14 +286,74 @@ def edit_service(id):
     
     return render_template('admin/edit_service.html', form=form, service=service)
 
+
 @admin_bp.route('/admin/services/delete/<int:id>')
 @login_required
 @admin_required
 def delete_service(id):
-    """Service delete karo"""
     service = Service.query.get_or_404(id)
     db.session.delete(service)
     db.session.commit()
     flash('Service deleted successfully!', 'success')
     return redirect(url_for('admin.manage_services'))
 
+@admin_bp.route('/admin/appointment/<int:appointment_id>/delete', methods=['POST'])
+@login_required
+@admin_required
+def delete_appointment(appointment_id):
+    """Professional delete appointment with email notification and logging"""
+    
+    # Fetch the appointment
+    appointment = Appointment.query.get_or_404(appointment_id)
+    
+    # Store patient and appointment details for logging (before deletion)
+    patient_name = f"{appointment.patient.first_name} {appointment.patient.last_name}"
+    patient_email = appointment.patient.email
+    appointment_date = appointment.appointment_date
+    appointment_time = appointment.appointment_time
+    appointment_status = appointment.status
+    
+    try:
+        # Send cancellation email if appointment was confirmed
+        if appointment_status == 'confirmed':
+            from utils.email_helper import send_appointment_cancellation_email
+            email_sent = send_appointment_cancellation_email(
+                patient_email=patient_email,
+                patient_name=appointment.patient.first_name,
+                appointment=appointment
+            )
+            if email_sent:
+                flash(f'📧 Cancellation email sent to {patient_email}', 'info')
+        
+        # Log the deletion (optional - create an AuditLog model for production)
+        print(f"🗑️ DELETED APPOINTMENT: ID={appointment_id}, Patient={patient_name}, Date={appointment_date}, Status={appointment_status}")
+        
+        # Delete the appointment
+        db.session.delete(appointment)
+        db.session.commit()
+        
+        # Professional flash message
+        flash(f'✅ Appointment #{appointment_id} for {patient_name} has been deleted successfully.', 'success')
+        
+        # Return JSON for AJAX requests
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify({
+                'success': True,
+                'message': f'Appointment #{appointment_id} deleted successfully',
+                'appointment_id': appointment_id
+            })
+        
+        return redirect(url_for('admin.manage_appointments'))
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"❌ ERROR deleting appointment: {str(e)}")
+        
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500
+        
+        flash(f'❌ Error deleting appointment: {str(e)}', 'danger')
+        return redirect(url_for('admin.manage_appointments'))

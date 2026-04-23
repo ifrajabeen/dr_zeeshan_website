@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_mail import Mail
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(override=True)
 
 # Initialize extensions
 db = SQLAlchemy()
@@ -60,15 +60,22 @@ def create_app():
     def inject_global_data():
         """Make data available to all templates"""
         # Import inside function to avoid circular imports
-        from models.models import Doctor
+        from models.models import Doctor, Service, Setting
         
         # Get or create doctor - with app context
         with app.app_context():
             doctor = Doctor.get_doctor()
+            services = Service.query.filter_by(is_active=True).order_by(Service.order).all()
+            settings = Setting.get_all_dict()
         
         # Settings dictionary
         settings = {
             'clinic_name': 'Dr. Zeeshan Ahmed',
+            'footer_description': 'Providing compassionate, professional mental health care to help you achieve emotional wellness and balance.',
+            'facebook_url': '#',
+            'twitter_url': '#',
+            'instagram_url': '#',
+            'linkedin_url': '#',
             'clinic_phone': '+1 (555) 123-4567',
             'clinic_email': 'contact@drzeeshan.com',
             'clinic_address': '123 Wellness Street, Medical District'
@@ -96,7 +103,8 @@ def create_app():
     from routes.appointments import appointments_bp
     from routes.reviews import reviews_bp
     from routes.admin import admin_bp
-    
+    from routes.faq import faq_bp
+    app.register_blueprint(faq_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(appointments_bp)
@@ -115,8 +123,10 @@ def create_app():
     
     return app
 
+
 # Create app instance
 app = create_app()
 
 if __name__ == '__main__':
     app.run(debug=True)
+

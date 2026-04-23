@@ -12,14 +12,16 @@
             <!-- Common links for everyone -->
             <li><a href="{{ url_for('main.index') }}" class="nav-link">Home</a></li>
             <li><a href="{{ url_for('main.about') }}" class="nav-link">About</a></li>
-            <li><a href="{{ url_for('appointments.book_appointment') }}" class="nav-link">Book Appointment</a></li>
-            <li><a href="{{ url_for('reviews.reviews') }}" class="nav-link">Reviews</a></li>
             
             <!-- User specific links -->
             {% if current_user.is_authenticated %}
                 <!-- ✅ PATIENT DASHBOARD - Sirf patient ko dikhe -->
                 {% if not current_user.is_admin() %}
                 <li><a href="{{ url_for('appointments.dashboard') }}" class="nav-link">My Dashboard</a></li>
+                <li><a href="{{ url_for('appointments.book_appointment') }}" class="nav-link">Book Appointment</a></li>
+                <li><a href="{{ url_for('reviews.reviews') }}" class="nav-link">Reviews</a></li>
+
+
                 {% endif %}
                 
                 <!-- ✅ ADMIN DASHBOARD - Sirf admin ko dikhe -->

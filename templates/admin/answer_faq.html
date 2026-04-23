@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Answer Question</h2>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Question:</strong> {{ question.question }}</p>
+                        <p><strong>Asked by:</strong> {{ question.asked_by.first_name }}</p>
+                        
+                        <form method="POST">
+                            {{ form.hidden_tag() }}
+                            <div class="form-group">
+                                {{ form.answer.label }}
+                                {{ form.answer(class="form-control", rows="5") }}
+                            </div>
+                            {{ form.submit(class="btn btn-primary") }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

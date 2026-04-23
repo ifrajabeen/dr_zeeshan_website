@@ -115,3 +115,18 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField('New Password', validators=[DataRequired(), Length(min=6)])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
+
+class FAQQuestionForm(FlaskForm):
+    question = TextAreaField('Your Question', validators=[DataRequired(), Length(min=10, max=500)])
+    category = SelectField('Category', choices=[], coerce=int)
+    submit = SubmitField('Submit Question')
+    
+    def __init__(self, *args, **kwargs):
+        super(FAQQuestionForm, self).__init__(*args, **kwargs)
+        from models.models import FAQCategory
+        self.category.choices = [(c.id, c.name) for c in FAQCategory.query.filter_by(is_active=True).all()]
+
+
+class FAQAnswerForm(FlaskForm):
+    answer = TextAreaField('Answer', validators=[DataRequired(), Length(min=10, max=1000)])
+    submit = SubmitField('Submit Answer')

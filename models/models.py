@@ -173,3 +173,48 @@ class Service(db.Model):
     @classmethod
     def get_active_services(cls):
         return cls.query.filter_by(is_active=True).order_by(cls.order).all()
+    
+class FAQCategory(db.Model):
+    __tablename__ = 'faq_categories'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    order = db.Column(db.Integer, default=0)
+    is_active = db.Column(db.Boolean, default=True)
+    
+    # Relationship
+    questions = db.relationship('FAQQuestion', backref='category', lazy=True)
+
+
+class FAQQuestion(db.Model):
+    __tablename__ = 'faq_questions'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    question = db.Column(db.Text, nullable=False)
+    answer = db.Column(db.Text)
+    category_id = db.Column(db.Integer, db.ForeignKey('faq_categories.id'))
+    asked_by_patient_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    is_answered = db.Column(db.Boolean, default=False)
+    is_approved = db.Column(db.Boolean, default=False)
+    views = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationship
+    asked_by = db.relationship('User', backref='asked_questions')
+
+
+class FAQAnswer(db.Model):
+    __tablename__ = 'faq_answers'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    question_id = db.Column(db.Integer, db.ForeignKey('faq_questions.id'), nullable=False)
+    answer = db.Column(db.Text, nullable=False)
+    answered_by_admin_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    question = db.relationship('FAQQuestion', backref='answers')
+    answered_by = db.relationship('User', backref='faq_answers')

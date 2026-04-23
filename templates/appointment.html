@@ -10,9 +10,10 @@
             </p>
         </div>
         
-        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 3rem;">
-            <div class="form-container" data-aos="fade-right">
-                <form method="POST" action="">
+        <div class="appointment-container">
+            <!-- Form Section -->
+            <div class="appointment-form-container" data-aos="fade-right">
+                <form method="POST" action="" class="appointment-form">
                     {{ form.hidden_tag() }}
                     
                     <div class="form-group">
@@ -20,7 +21,7 @@
                         {{ form.appointment_date(class="form-control", type="date") }}
                         {% if form.appointment_date.errors %}
                             {% for error in form.appointment_date.errors %}
-                                <span style="color: #F56565; font-size: 0.875rem;">{{ error }}</span>
+                                <span class="error-message">{{ error }}</span>
                             {% endfor %}
                         {% endif %}
                     </div>
@@ -30,7 +31,7 @@
                         {{ form.appointment_time(class="form-control") }}
                         {% if form.appointment_time.errors %}
                             {% for error in form.appointment_time.errors %}
-                                <span style="color: #F56565; font-size: 0.875rem;">{{ error }}</span>
+                                <span class="error-message">{{ error }}</span>
                             {% endfor %}
                         {% endif %}
                     </div>
@@ -40,53 +41,48 @@
                         {{ form.description(class="form-control", rows="5", placeholder="Please briefly describe the reason for your visit...") }}
                         {% if form.description.errors %}
                             {% for error in form.description.errors %}
-                                <span style="color: #F56565; font-size: 0.875rem;">{{ error }}</span>
+                                <span class="error-message">{{ error }}</span>
                             {% endfor %}
                         {% endif %}
                     </div>
                     
                     <div class="form-group">
-                        {{ form.submit(class="btn btn-primary", style="width: 100%;") }}
+                        {{ form.submit(class="submit-btn") }}
                     </div>
                 </form>
             </div>
             
-            <div data-aos="fade-left">
-                <!-- Appointment page mein doctor ki info -->
-                <div class="card">
-                    <h3>About {{ doctor.name }}</h3>
-                    <p><strong>{{ doctor.title }}</strong></p>
-                    <p>{{ doctor.experience }} experience</p>
-                    <p>Contact: {{ doctor.phone }}</p>
-                     <h3 style="color: var(--teal); margin-bottom: 1.5rem; margin-top: 1.5rem;">Appointment Information</h3>
-                    
-                    <div style="margin-bottom: 1.5rem;">
-                        <h4 style="color: var(--dark-blue); font-size: 1.1rem; margin-bottom: 0.5rem;">Session Duration</h4>
-                        <p style="color: var(--text-light);">50 minutes per session</p>
-                    </div>
-                    
-                    
-                    
-                    <div style="margin-bottom: 1.5rem;">
-                        <h4 style="color: var(--dark-blue); font-size: 1.1rem; margin-bottom: 0.5rem;">Cancellation Policy</h4>
-                        <p style="color: var(--text-light);">Please cancel at least 24 hours in advance to avoid fees</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 1.5rem;">
-                        <h4 style="color: var(--dark-blue); font-size: 1.1rem; margin-bottom: 0.5rem;">Insurance</h4>
-                        <p style="color: var(--text-light);">We accept most major insurance plans</p>
-                    </div>
-                    
-                    <hr style="border: none; border-top: 1px solid var(--gray); margin: 1.5rem 0;">
-                    
-                    <div style="background: var(--light-bg); padding: 1.5rem; border-radius: 10px;">
-                        <h4 style="color: var(--dark-blue); font-size: 1.1rem; margin-bottom: 0.5rem;">Need Immediate Help?</h4>
-                        <p style="color: var(--text-light); margin-bottom: 1rem;">
-                            For urgent matters, please call our office directly.
-                        </p>
-                        <p style="font-weight: 600; color: var(--teal);">
-                            <i class="fas fa-phone" style="margin-right: 0.5rem;"></i> +923207072750
-                        </p>
+            <!-- Doctor Info Section -->
+            <div class="doctor-info-card" data-aos="fade-left">
+                <h3>About {{ doctor.name }}</h3>
+                <p><strong>{{ doctor.title }}</strong></p>
+                <p><i class="fas fa-briefcase"></i> {{ doctor.experience }} experience</p>
+                <p><i class="fas fa-phone"></i> Contact: {{ doctor.phone }}</p>
+                
+                <hr class="divider">
+                
+                <div class="info-section">
+                    <h4><i class="fas fa-clock"></i> Session Duration</h4>
+                    <p>50 minutes per session</p>
+                </div>
+                
+                <div class="info-section">
+                    <h4><i class="fas fa-calendar-times"></i> Cancellation Policy</h4>
+                    <p>Please cancel at least 24 hours in advance to avoid fees</p>
+                </div>
+                
+                <div class="info-section">
+                    <h4><i class="fas fa-shield-alt"></i> Insurance</h4>
+                    <p>We accept most major insurance plans</p>
+                </div>
+                
+                <hr class="divider">
+                
+                <div class="emergency-box">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Need Immediate Help?</h4>
+                    <p>For urgent matters, please call our office directly.</p>
+                    <div class="phone-number">
+                        <i class="fas fa-phone"></i> +923207072750
                     </div>
                 </div>
             </div>

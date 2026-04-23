@@ -198,15 +198,9 @@ a:hover {
 }
 
 .hero-image img {
-  width: 100%;      /* Jitni width chahiye */
-  /* height: 400px;     Jitni height chahiye */
+  width: 100%;      
   object-fit: cover;
-  object-position: center;  /* Person center mein rahega */
-
-    /* width: 100%; */
     height: fit-content;
-    /* border-radius: 20px; */
-    /* box-shadow: var(--shadow-lg); */
 }
 
 /* ===== CARDS ===== */
@@ -229,39 +223,373 @@ a:hover {
     margin-bottom: 1rem;
     color: var(--teal);
 }
-
-/* ===== SERVICES ===== */
+/* Services Section Styling */
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    margin-top: 3rem;
+    margin-top: 2rem;
 }
 
 .service-card {
-    text-align: center;
+    background: white;
+    border-radius: 15px;
     padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.service-icon {
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.service-icon i {
+    font-size: 3rem;
+    color: var(--teal);
+    transition: all 0.3s ease;
+}
+
+.service-card:hover .service-icon i {
+    transform: scale(1.1);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 1rem 0;
+    color: var(--dark-blue);
+}
+
+.service-card p {
+    color: var(--text-light);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+/* ========== REVIEWS PAGE RESPONSIVE STYLES ========== */
+
+/* Reviews Container */
+.reviews-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+/* Reviews List Section */
+.reviews-list-section {
+    background: transparent;
+}
+
+/* Reviews Header */
+.reviews-header {
+    margin-bottom: 2rem;
+}
+
+.reviews-header h1 {
+    color: var(--teal);
     font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Rating Summary */
+.rating-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.stars-display {
+    font-size: 1.5rem;
+    color: #FFD700;
+}
+
+.rating-number {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--dark-blue);
+}
+
+.review-count {
+    color: var(--text-light);
+}
+
+/* Review Card */
+.review-card {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.reviewer-name {
+    color: var(--dark-blue);
+    margin-bottom: 0.25rem;
+    font-size: 1.1rem;
+}
+
+.review-date {
+    color: var(--text-light);
+    font-size: 0.8rem;
+}
+
+.review-rating {
+    color: #FFD700;
+    font-size: 0.9rem;
+}
+
+.review-comment {
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin-top: 0.5rem;
+}
+
+/* Empty Reviews State */
+.empty-reviews {
+    text-align: center;
+    padding: 3rem;
+    background: var(--white);
+    border-radius: 15px;
+}
+
+.empty-reviews i {
+    font-size: 3rem;
     color: var(--teal);
     margin-bottom: 1rem;
 }
 
-/* ===== REVIEWS ===== */
-.review-card {
-    background: var(--white);
-    border-radius: 15px;
-    padding: 25px;
-    border-left: 4px solid var(--aqua);
-}
-
-.rating {
-    color: #FFD700;
+.empty-reviews h3 {
+    color: var(--dark-blue);
     margin-bottom: 1rem;
 }
 
+.empty-reviews p {
+    color: var(--text-light);
+}
+
+/* Review Form Container */
+.review-form-container {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+    position: sticky;
+    top: 100px;
+}
+
+.review-form-container h2 {
+    color: var(--teal);
+    margin-bottom: 1.5rem;
+}
+
+/* Rating Stars Input */
+.rating-input {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 1.8rem;
+    color: #FFD700;
+    margin-bottom: 0.5rem;
+}
+
+.rating-star-label {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.rating-star-label:hover {
+    transform: scale(1.1);
+}
+
+.rating-star-label input {
+    display: none;
+}
+
+/* Login Required Box */
+.login-required-box {
+    text-align: center;
+    padding: 2rem;
+}
+
+.login-required-box i {
+    font-size: 3rem;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+}
+
+.login-required-box h3 {
+    color: var(--dark-blue);
+    margin-bottom: 1rem;
+}
+
+.login-required-box p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+}
+
+.login-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ========== RESPONSIVE BREAKPOINTS ========== */
+
+/* Tablet View (768px - 1024px) */
+@media (max-width: 1024px) {
+    .reviews-container {
+        gap: 2rem;
+    }
+    
+    .review-form-container {
+        padding: 1.5rem;
+    }
+    
+    .reviews-header h1 {
+        font-size: 2rem;
+    }
+    
+    .stars-display, .rating-number {
+        font-size: 1.2rem;
+    }
+}
+
+/* Mobile View (576px - 768px) */
+@media (max-width: 768px) {
+    .reviews-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .review-form-container {
+        position: static;
+        order: 2;
+    }
+    
+    .reviews-list-section {
+        order: 1;
+    }
+    
+    .review-header {
+        flex-direction: column;
+    }
+    
+    .review-rating {
+        margin-top: 0.5rem;
+    }
+    
+    .rating-summary {
+        justify-content: center;
+    }
+    
+    .reviews-header h1 {
+        text-align: center;
+        font-size: 1.8rem;
+    }
+    
+    .review-form-container h2 {
+        text-align: center;
+    }
+}
+
+/* Small Mobile View (320px - 576px) */
+@media (max-width: 576px) {
+    .review-card {
+        padding: 1rem;
+    }
+    
+    .review-form-container {
+        padding: 1rem;
+    }
+    
+    .reviews-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .stars-display {
+        font-size: 1rem;
+    }
+    
+    .rating-number {
+        font-size: 1rem;
+    }
+    
+    .review-count {
+        font-size: 0.8rem;
+    }
+    
+    .rating-input {
+        font-size: 1.3rem;
+        justify-content: center;
+    }
+    
+    .reviewer-name {
+        font-size: 1rem;
+    }
+    
+    .review-date {
+        font-size: 0.7rem;
+    }
+    
+    .review-comment {
+        font-size: 0.85rem;
+    }
+    
+    .login-buttons {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .login-buttons .btn {
+        width: 100%;
+        margin-left: 0 !important;
+    }
+}
+
+/* Extra Small Mobile (below 380px) */
+@media (max-width: 380px) {
+    .review-card {
+        padding: 0.8rem;
+    }
+    
+    .review-form-container {
+        padding: 0.8rem;
+    }
+    
+    .reviews-header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .rating-summary {
+        gap: 0.5rem;
+    }
+    
+    .rating-input {
+        font-size: 1.2rem;
+    }
+    
+    .reviewer-name {
+        font-size: 0.9rem;
+    }
+}
 /* ===== FORMS ===== */
 .form-container {
     max-width: 500px;
@@ -518,4 +846,926 @@ a:hover {
 .email-cancelled {
     color: #EF4444;
     background: rgba(239, 68, 68, 0.1);
+}
+
+/* Professional Answer Card */
+.answer-card {
+    background: linear-gradient(135deg, #f0f9ff, #e6f7f5);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border-left: 5px solid #2C7A7B;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.answer-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.answer-avatar {
+    background: #2C7A7B;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.answer-avatar i {
+    color: white;
+    font-size: 1.3rem;
+}
+
+.answer-title {
+    color: #1A365D;
+    font-weight: 600;
+    margin: 0;
+}
+
+.answer-subtitle {
+    color: #718096;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.answer-content {
+    background: white;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 0.5rem;
+}
+
+.answer-content p {
+    color: #2D3748;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.answer-footer {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: #718096;
+    display: flex;
+    gap: 1rem;
+}
+/* ========== APPOINTMENT PAGE RESPONSIVE STYLES ========== */
+
+/* Appointment Page Layout */
+.appointment-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+/* Form Container */
+.appointment-form-container {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+}
+
+/* Doctor Info Card */
+.doctor-info-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-lg);
+    position: sticky;
+    top: 100px;
+}
+
+.doctor-info-card h3 {
+    color: var(--teal);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.doctor-info-card p {
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+}
+
+/* Info Section */
+.info-section {
+    margin-bottom: 1.5rem;
+}
+
+.info-section h4 {
+    color: var(--dark-blue);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.info-section p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+/* Emergency Box */
+.emergency-box {
+    background: var(--light-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.emergency-box h4 {
+    color: var(--dark-blue);
+    margin-bottom: 0.5rem;
+}
+
+.emergency-box .phone-number {
+    font-weight: 600;
+    color: var(--teal);
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+/* Form Styling */
+.appointment-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--dark-blue);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--gray);
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(44, 122, 123, 0.1);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Error Messages */
+.error-message {
+    color: #F56565;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--teal), var(--aqua));
+    color: var(--white);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(44, 122, 123, 0.3);
+}
+
+/* Divider */
+.divider {
+    border: none;
+    border-top: 1px solid var(--gray);
+    margin: 1.5rem 0;
+}
+
+/* ========== RESPONSIVE BREAKPOINTS ========== */
+
+/* Tablet View (768px - 1024px) */
+@media (max-width: 1024px) {
+    .appointment-container {
+        gap: 2rem;
+    }
+    
+    .appointment-form-container {
+        padding: 1.5rem;
+    }
+    
+    .doctor-info-card {
+        padding: 1.2rem;
+    }
+    
+    .emergency-box .phone-number {
+        font-size: 1rem;
+    }
+}
+
+/* Mobile View (576px - 768px) */
+@media (max-width: 768px) {
+    .appointment-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .doctor-info-card {
+        position: static;
+        order: 2;
+    }
+    
+    .appointment-form-container {
+        order: 1;
+    }
+    
+    .appointment-form-container {
+        padding: 1.2rem;
+    }
+    
+    .form-control {
+        padding: 10px 12px;
+    }
+    
+    .submit-btn {
+        padding: 12px;
+        font-size: 1rem;
+    }
+    
+    .doctor-info-card {
+        margin-top: 0;
+    }
+}
+
+/* Small Mobile View (320px - 576px) */
+@media (max-width: 576px) {
+    .appointment-form-container {
+        padding: 1rem;
+    }
+    
+    .doctor-info-card {
+        padding: 1rem;
+    }
+    
+    .form-label {
+        font-size: 0.9rem;
+    }
+    
+    .form-control {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+    
+    .submit-btn {
+        padding: 10px;
+        font-size: 0.95rem;
+    }
+    
+    .doctor-info-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .info-section h4 {
+        font-size: 0.9rem;
+    }
+    
+    .info-section p {
+        font-size: 0.85rem;
+    }
+    
+    .emergency-box {
+        padding: 1rem;
+    }
+    
+    .emergency-box .phone-number {
+        font-size: 0.9rem;
+    }
+}
+
+/* Extra Small Mobile (below 380px) */
+@media (max-width: 380px) {
+    .appointment-form-container {
+        padding: 0.8rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .form-label {
+        font-size: 0.85rem;
+    }
+    
+    .form-control {
+        padding: 8px;
+        font-size: 0.85rem;
+    }
+}
+
+/* ========== ADMIN DASHBOARD RESPONSIVE STYLES ========== */
+
+/* Admin Dashboard Container */
+.admin-dashboard {
+    padding: 2rem 0;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.stat-card {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.stat-label {
+    color: var(--text-light);
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Stats Card Colors */
+.stat-teal { border-left: 5px solid var(--teal); }
+.stat-teal .stat-number { color: var(--teal); }
+
+.stat-orange { border-left: 5px solid #F59E0B; }
+.stat-orange .stat-number { color: #F59E0B; }
+
+.stat-green { border-left: 5px solid #10B981; }
+.stat-green .stat-number { color: #10B981; }
+
+.stat-red { border-left: 5px solid #EF4444; }
+.stat-red .stat-number { color: #EF4444; }
+
+/* Admin Header */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.admin-title h1 {
+    color: var(--teal);
+    font-size: 2rem;
+    margin: 0;
+}
+
+.admin-title p {
+    color: var(--text-light);
+    margin-top: 0.25rem;
+}
+
+/* Actions Grid */
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.action-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow);
+}
+
+.action-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+
+.action-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.action-icon-teal { background: var(--teal); }
+.action-icon-aqua { background: var(--aqua); }
+.action-icon-dark { background: var(--dark-blue); }
+
+.action-icon i {
+    color: white;
+    font-size: 2.5rem;
+}
+
+.action-card h3 {
+    color: var(--dark-blue);
+    margin-bottom: 1rem;
+}
+
+.action-card p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+/* Recent Appointments Table */
+.recent-appointments {
+    margin-top: 4rem;
+}
+
+.recent-appointments h2 {
+    color: var(--dark-blue);
+    margin-bottom: 2rem;
+}
+
+.appointments-table {
+    overflow-x: auto;
+    background: var(--white);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+.appointments-table table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+}
+
+.appointments-table th {
+    background: var(--teal);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.appointments-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray);
+}
+
+.appointments-table tr:hover {
+    background: var(--light-bg);
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.status-confirmed {
+    background: #C6F6D5;
+    color: #22543D;
+}
+
+.status-completed {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+.status-cancelled {
+    background: #FED7D7;
+    color: #742A2A;
+}
+
+/* ========== RESPONSIVE BREAKPOINTS ========== */
+
+/* Tablet View (768px - 1024px) */
+@media (max-width: 1024px) {
+    .stats-grid {
+        gap: 1rem;
+    }
+    
+    .stat-card {
+        padding: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .actions-grid {
+        gap: 1.5rem;
+    }
+    
+    .action-card {
+        padding: 1.5rem;
+    }
+    
+    .action-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .action-icon i {
+        font-size: 1.8rem;
+    }
+}
+
+/* Mobile View (576px - 768px) */
+@media (max-width: 768px) {
+    .admin-dashboard {
+        padding: 1rem 0;
+    }
+    
+    .admin-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .admin-title h1 {
+        font-size: 1.5rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .actions-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .action-card {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    .recent-appointments h2 {
+        text-align: center;
+        font-size: 1.3rem;
+    }
+    
+    .appointments-table th,
+    .appointments-table td {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Small Mobile View (320px - 576px) */
+@media (max-width: 576px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+    
+    .stat-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+        padding: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 1.8rem;
+    }
+    
+    .stat-label {
+        margin-top: 0;
+    }
+    
+    .admin-title h1 {
+        font-size: 1.3rem;
+    }
+    
+    .admin-title p {
+        font-size: 0.85rem;
+    }
+    
+    .action-card {
+        padding: 1.2rem;
+    }
+    
+    .action-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .action-icon i {
+        font-size: 1.5rem;
+    }
+    
+    .action-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .action-card p {
+        font-size: 0.85rem;
+    }
+    
+    .recent-appointments h2 {
+        font-size: 1.2rem;
+    }
+    
+    .appointments-table th,
+    .appointments-table td {
+        padding: 0.5rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Extra Small Mobile (below 380px) */
+@media (max-width: 380px) {
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .action-card h3 {
+        font-size: 1rem;
+    }
+    
+    .appointments-table th,
+    .appointments-table td {
+        padding: 0.4rem;
+        font-size: 0.7rem;
+    }
+}
+
+/* ========== MANAGE APPOINTMENTS RESPONSIVE STYLES ========== */
+
+/* Page Header */
+.appointments-header {
+    margin-bottom: 2rem;
+}
+
+.appointments-header h1 {
+    color: var(--teal);
+    font-size: 2.5rem;
+}
+
+/* Table Container - Horizontal Scroll on Mobile */
+.appointments-table-container {
+    overflow-x: auto;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    background: var(--white);
+}
+
+.appointments-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.appointments-table th {
+    background: var(--teal);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.appointments-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray);
+    vertical-align: middle;
+}
+
+.appointments-table tr:hover {
+    background: var(--light-bg);
+}
+
+/* Patient Info */
+.patient-name {
+    font-weight: 600;
+    color: var(--dark-blue);
+    margin-bottom: 0.25rem;
+}
+
+.patient-email {
+    color: var(--text-light);
+    font-size: 0.8rem;
+}
+
+/* Action Form */
+.action-form {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.status-select {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 2px solid var(--gray);
+    background: white;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.status-select:focus {
+    outline: none;
+    border-color: var(--teal);
+}
+
+/* Buttons */
+.btn-update {
+    background: var(--teal);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.btn-update:hover {
+    background: var(--dark-blue);
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    background: #EF4444;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+    background: #DC2626;
+    transform: translateY(-2px);
+}
+
+/* Email Status Indicator */
+.email-indicator {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.7rem;
+    color: #10B981;
+}
+
+.email-indicator i {
+    margin-right: 0.25rem;
+}
+
+/* Action Buttons Container */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background: var(--white);
+    border-radius: 15px;
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: var(--teal);
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    color: var(--dark-blue);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    color: var(--text-light);
+}
+
+/* Delete Modal (for delete confirmation) */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.modal-content i {
+    font-size: 3rem;
+    color: #EF4444;
+    margin-bottom: 1rem;
+}
+
+.modal-content h3 {
+    color: var(--dark-blue);
+    margin-bottom: 0.5rem;
+}
+
+.modal-content p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* ========== RESPONSIVE BREAKPOINTS ========== */
+
+@media (max-width: 768px) {
+    .appointments-header h1 {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+    
+    .appointments-table th,
+    .appointments-table td {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+    }
+    
+    .patient-email {
+        font-size: 0.7rem;
+    }
+    
+    .status-select {
+        padding: 0.3rem;
+        font-size: 0.75rem;
+    }
+    
+    .btn-update, .btn-delete {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .appointments-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .action-form {
+        flex-direction: column;
+    }
+    
+    .status-select {
+        width: 100%;
+    }
 }

@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-padding">
+    <div class="container">
+        <div class="text-center" data-aos="fade-up">
+            <h1 style="color: var(--teal);">Frequently Asked Questions</h1>
+            <p style="color: var(--text-light);">Ask a question and get instant answer!</p>
+        </div>
+        
+        <!-- ========== CHATBOT SECTION ========== -->
+        <div class="ask-box" data-aos="fade-up" style="max-width: 700px; margin: 2rem auto;">
+            <div class="card" style="padding: 2rem;">
+                <h3 style="color: var(--dark-blue);">
+                    <i class="fas fa-robot" style="color: var(--teal);"></i> AI Assistant
+                </h3>
+                <p style="color: var(--text-light); font-size: 0.9rem;">Ask anything about therapy, appointments, or mental health</p>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <input type="text" id="chat-question" class="form-control" 
+                           placeholder="Type your question here..." 
+                           style="flex: 1; padding: 12px;">
+                    <button id="ask-chat-btn" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Ask
+                    </button>
+                </div>
+                
+                <!-- Chatbot Answer Area -->
+                <div id="chat-answer-area" style="display: none; margin-top: 1.5rem;">
+                    <div style="background: linear-gradient(135deg, #f0f9ff, #e6f7f5); 
+                                padding: 1.5rem; 
+                                border-radius: 15px; 
+                                border-left: 5px solid var(--teal);
+                                box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                            <div style="background: var(--teal); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-robot" style="color: white; font-size: 1.2rem;"></i>
+                            </div>
+                            <div>
+                                <strong style="color: var(--dark-blue); font-size: 1.1rem;">Dr. Zeeshan's Assistant</strong>
+                                <p style="color: var(--text-light); font-size: 0.8rem; margin: 0;">AI-Powered Instant Answer</p>
+                            </div>
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 10px; margin-top: 0.5rem;">
+                            <div id="chat-answer-text" style="color: var(--text-dark); line-height: 1.6;"></div>
+                        </div>
+                        <div style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-light); display: flex; gap: 1rem;">
+                            <span><i class="fas fa-check-circle" style="color: var(--aqua);"></i> Verified Info</span>
+                            <span><i class="fas fa-clock"></i> Response <span id="response-time"></span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ========== EXISTING FAQS SECTION ========== -->
+        <div class="faq-categories-section" data-aos="fade-up">
+            <h2 style="color: var(--teal); text-align: center; margin-bottom: 2rem;">Browse by Category</h2>
+            
+            {% for category in categories %}
+            <div class="category-section" style="margin-bottom: 2rem;">
+                <h3 style="color: var(--dark-blue); border-left: 4px solid var(--teal); padding-left: 1rem; margin-bottom: 1rem;">
+                    <i class="fas fa-folder-open" style="color: var(--teal);"></i> {{ category.name }}
+                </h3>
+                <div class="faq-list">
+                    {% for question in questions if question.category_id == category.id %}
+                    <div class="faq-item card" style="margin-bottom: 1rem; padding: 0; overflow: hidden;">
+                        <div class="faq-question" data-question="{{ question.question }}" 
+                             style="cursor: pointer; padding: 1rem; background: var(--light-bg); transition: all 0.3s ease;">
+                            <i class="fas fa-question-circle" style="color: var(--teal);"></i>
+                            {{ question.question }}
+                            <i class="fas fa-chevron-down" style="float: right; transition: transform 0.3s;"></i>
+                        </div>
+                        <div class="faq-answer" style="display: none; padding: 1rem; background: white; border-top: 1px solid var(--gray);">
+                            <i class="fas fa-check-circle" style="color: var(--aqua);"></i>
+                            <span style="margin-left: 0.5rem;">{{ question.answer }}</span>
+                            <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-light);">
+                                <i class="fas fa-calendar-alt"></i> Last updated: {{ question.updated_at.strftime('%B %d, %Y') if question.updated_at else 'Recently' }}
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p style="color: var(--text-light); padding: 1rem;">No questions in this category yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Still have questions? -->
+        <div class="text-center" style="margin-top: 3rem; padding: 2rem; background: var(--light-bg); border-radius: 15px;">
+            <h3 style="color: var(--dark-blue);">Still have questions?</h3>
+            <p style="color: var(--text-light);">Contact us directly for personalized assistance</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+                <a href="tel:+15551234567" class="btn btn-primary">
+                    <i class="fas fa-phone"></i> Call Us
+                </a>
+                <a href="mailto:contact@drzeeshanclinic.com" class="btn btn-outline">
+                    <i class="fas fa-envelope"></i> Email Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// ========== CHATBOT FUNCTIONALITY ==========
+document.getElementById('ask-chat-btn').addEventListener('click', function() {
+    const question = document.getElementById('chat-question').value.trim();
+    if (!question) {
+        showToast('Please type a question', 'warning');
+        return;
+    }
+    
+    // Show loading
+    const answerArea = document.getElementById('chat-answer-area');
+    const answerText = document.getElementById('chat-answer-text');
+    const responseTime = document.getElementById('response-time');
+    
+    answerArea.style.display = 'block';
+    answerText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Finding the best answer for you...';
+    responseTime.innerHTML = '...';
+    
+    // Record start time
+    const startTime = Date.now();
+    
+    // Send to server
+    fetch('/api/faq/ask', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({question: question})
+    })
+    .then(response => response.json())
+    .then(data => {
+        const endTime = Date.now();
+        const timeTaken = ((endTime - startTime) / 1000).toFixed(1);
+        responseTime.innerHTML = `${timeTaken} seconds`;
+        
+        // Format answer
+        let formattedAnswer = data.answer;
+        
+        // Add styling for lists
+        if (formattedAnswer.includes(',') && !formattedAnswer.includes('<br>')) {
+            formattedAnswer = formattedAnswer.replace(/, /g, '<br>• ');
+            formattedAnswer = '<strong>📋 Here\'s what I found:</strong><br><br>• ' + formattedAnswer;
+        }
+        
+        answerText.innerHTML = formattedAnswer;
+        
+        // Smooth scroll
+        answerArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    })
+    .catch(error => {
+        answerText.innerHTML = '⚠️ Sorry, something went wrong. Please try again or call our office.';
+        responseTime.innerHTML = '--';
+    });
+});
+
+// Press Enter to ask
+document.getElementById('chat-question').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        document.getElementById('ask-chat-btn').click();
+    }
+});
+
+// ========== FAQ ACCORDION FUNCTIONALITY ==========
+document.querySelectorAll('.faq-question').forEach(item => {
+    item.addEventListener('click', () => {
+        const answer = item.nextElementSibling;
+        const icon = item.querySelector('.fa-chevron-down');
+        const isOpen = answer.style.display === 'block';
+        
+        // Close all answers
+        document.querySelectorAll('.faq-answer').forEach(ans => {
+            ans.style.display = 'none';
+        });
+        document.querySelectorAll('.fa-chevron-down').forEach(icn => {
+            icn.style.transform = 'rotate(0deg';
+        });
+        
+        // Open current if it was closed
+        if (!isOpen) {
+            answer.style.display = 'block';
+            if (icon) icon.style.transform = 'rotate(180deg)';
+            // Fill chatbot input with this question
+            document.getElementById('chat-question').value = item.innerText.trim();
+        }
+    });
+});
+
+// ========== TOAST NOTIFICATION ==========
+function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: ${type === 'warning' ? '#F59E0B' : '#10B981'};
+        color: white;
+        padding: 12px 20px;
+        border-radius: 10px;
+        z-index: 1000;
+        animation: slideIn 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    `;
+    toast.innerHTML = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+// Add CSS animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    .faq-question:hover {
+        background: #e2e8f0 !important;
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

@@ -19,39 +19,24 @@
 </section>
 
 <!-- About Preview -->
-<section class="section-padding">
+<!-- Services Section - Professional -->
+<section class="section-padding" style="background: var(--light-bg);">
     <div class="container">
         <div class="text-center" data-aos="fade-up">
-            <h2 style="color: var(--teal); font-size: 2.5rem; margin-bottom: 1rem;">Meet {{ doctor.name }}</h2>
-            <p>{{ doctor.qualifications }}</p>
-            <p>{{ doctor.biography[:200] }}...</p>
+            <h2 style="color: var(--teal); font-size: 2.5rem; margin-bottom: 1rem;">Our Services</h2>
+            <p style="font-size: 1.1rem; color: var(--text-light); max-width: 700px; margin: 0 auto 3rem;">
+                Professional psychological services tailored to your unique needs
+            </p>
         </div>
         
-        <!-- ✅ DYNAMIC SERVICES SECTION - REPLACED HARDCODED SERVICES -->
-        <div class="services-grid" style="margin-top: 4rem;">
+        <div class="services-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
             {% for service in services %}
-            <div class="card service-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
-                <div class="service-icon">
-                    <i class="fas {{ service.icon }}"></i>
+            <div class="card service-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}" style="transition: all 0.3s ease;">
+                <div class="service-icon" style="text-align: center; margin-bottom: 1.5rem;">
+                    <i class="{{ service.icon }}" style="font-size: 3rem; color: var(--teal);"></i>
                 </div>
-                <h3 class="card-title">{{ service.title }}</h3>
-                <p>{{ service.description }}</p>
-            </div>
-            {% else %}
-            <!-- Fallback if no services in database -->
-            <div class="card service-card">
-                <div class="service-icon">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <h3 class="card-title">Individual Therapy</h3>
-                <p>One-on-one sessions focused on your personal growth and healing journey.</p>
-            </div>
-            <div class="card service-card">
-                <div class="service-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <h3 class="card-title">Couples Counseling</h3>
-                <p>Strengthen your relationship with professional guidance and support.</p>
+                <h3 class="card-title" style="text-align: center; color: var(--dark-blue); margin-bottom: 1rem;">{{ service.name }}</h3>
+                <p style="color: var(--text-light); line-height: 1.6; text-align: center;">{{ service.description }}</p>
             </div>
             {% endfor %}
         </div>
@@ -108,4 +93,6 @@
         </div>
     </div>
 </section>
+
+
 {% endblock %}

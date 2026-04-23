@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="background: linear-gradient(135deg, var(--teal), var(--aqua)); padding: 20px; border-radius: 15px 15px 0 0;">
+                        <h2 style="color: white; margin: 0;">
+                            <i class="fas fa-question-circle"></i> Ask a Question
+                        </h2>
+                    </div>
+                    <div class="card-body" style="padding: 30px;">
+                        <form method="POST" action="">
+                            {{ form.hidden_tag() }}
+                            
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                {{ form.category(class="form-control") }}
+                                {% if form.category.errors %}
+                                    {% for error in form.category.errors %}
+                                        <span style="color: red;">{{ error }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="question">Your Question</label>
+                                {{ form.question(class="form-control", rows="5", placeholder="Type your question here...") }}
+                                {% if form.question.errors %}
+                                    {% for error in form.question.errors %}
+                                        <span style="color: red;">{{ error }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-group text-center">
+                                {{ form.submit(class="btn btn-primary", style="padding: 12px 40px;") }}
+                                <a href="{{ url_for('faq.faqs') }}" class="btn btn-outline" style="padding: 12px 40px; margin-left: 10px;">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

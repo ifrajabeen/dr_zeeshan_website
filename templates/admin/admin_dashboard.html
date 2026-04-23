@@ -3,125 +3,121 @@
 {% block content %}
 <section class="section-padding">
     <div class="container">
-        <div data-aos="fade-up">
-            <h1 style="color: var(--teal); font-size: 2.5rem; margin-bottom: 0.5rem;">
-                Admin Dashboard
-            </h1>
-            <p style="color: var(--text-light); font-size: 1.1rem; margin-bottom: 3rem;">
-                Welcome back, {{ current_user.first_name }}! Manage your clinic from here.
-            </p>
-        </div>
-        <!-- Admin Dashboard mein profile section add karo -->
-<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-    <div>
-        <h1 style="color: var(--teal);">Admin Dashboard</h1>
-        <p>Welcome, {{ current_user.first_name }} {{ current_user.last_name }}!</p>
-    </div>
-    <div>
-        <a href="{{ url_for('admin.admin_profile') }}" class="btn btn-outline">
-            <i class="fas fa-user-edit"></i> Edit Profile
-        </a>
-    </div>
-</div>
-        
-        <!-- Stats Cards -->
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 3rem;">
-            <div class="card" style="text-align: center; border-left: 5px solid var(--teal);">
-                <h3 style="color: var(--teal); font-size: 2rem; margin: 0;">{{ stats.total_appointments }}</h3>
-                <p style="color: var(--text-light);">Total Appointments</p>
-            </div>
-            <div class="card" style="text-align: center; border-left: 5px solid #F59E0B;">
-                <h3 style="color: #F59E0B; font-size: 2rem; margin: 0;">{{ stats.pending_appointments }}</h3>
-                <p style="color: var(--text-light);">Pending</p>
-            </div>
-            <div class="card" style="text-align: center; border-left: 5px solid #10B981;">
-                <h3 style="color: #10B981; font-size: 2rem; margin: 0;">{{ stats.total_patients }}</h3>
-                <p style="color: var(--text-light);">Total Patients</p>
-            </div>
-            <div class="card" style="text-align: center; border-left: 5px solid #EF4444;">
-                <h3 style="color: #EF4444; font-size: 2rem; margin: 0;">{{ stats.pending_reviews }}</h3>
-                <p style="color: var(--text-light);">Pending Reviews</p>
-            </div>
-        </div>
-        
-        <!-- Admin Actions -->
-        <h2 style="color: var(--dark-blue); margin-bottom: 2rem;">Quick Actions</h2>
-        
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
-            <!-- Edit Doctor Card -->
-            <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="background: var(--teal); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
-                    <i class="fas fa-user-md" style="color: white; font-size: 2.5rem;"></i>
+        <div class="admin-dashboard">
+            <div data-aos="fade-up">
+                <div class="admin-header">
+                    <div class="admin-title">
+                        <h1>Admin Dashboard</h1>
+                        <p>Welcome back, {{ current_user.first_name }} {{ current_user.last_name }}! Manage your clinic from here.</p>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('admin.admin_profile') }}" class="btn btn-outline">
+                            <i class="fas fa-user-edit"></i> Edit Profile
+                        </a>
+                    </div>
                 </div>
-                <h3 style="color: var(--dark-blue);">Edit Doctor Profile</h3>
-                <p style="color: var(--text-light); margin-bottom: 1.5rem;">
-                    Update doctor's information, qualifications, and bio
-                </p>
-                <a href="{{ url_for('admin.edit_doctor') }}" class="btn btn-primary">
-                    Edit Profile <i class="fas fa-arrow-right"></i>
-                </a>
             </div>
             
-            <!-- Manage Appointments Card -->
-            <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="background: var(--aqua); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
-                    <i class="fas fa-calendar-check" style="color: white; font-size: 2.5rem;"></i>
+            <!-- Stats Cards -->
+            <div class="stats-grid" data-aos="fade-up">
+                <div class="stat-card stat-teal">
+                    <div>
+                        <h3 class="stat-number">{{ stats.total_appointments }}</h3>
+                        <p class="stat-label">Total Appointments</p>
+                    </div>
                 </div>
-                <h3 style="color: var(--dark-blue);">Manage Appointments</h3>
-                <p style="color: var(--text-light); margin-bottom: 1.5rem;">
-                    View, confirm, or cancel patient appointments
-                </p>
-                <a href="{{ url_for('admin.manage_appointments') }}" class="btn" style="background: var(--aqua); color: white;">
-                    Manage <i class="fas fa-arrow-right"></i>
-                </a>
+                <div class="stat-card stat-orange">
+                    <div>
+                        <h3 class="stat-number">{{ stats.pending_appointments }}</h3>
+                        <p class="stat-label">Pending</p>
+                    </div>
+                </div>
+                <div class="stat-card stat-green">
+                    <div>
+                        <h3 class="stat-number">{{ stats.total_patients }}</h3>
+                        <p class="stat-label">Total Patients</p>
+                    </div>
+                </div>
+                <div class="stat-card stat-red">
+                    <div>
+                        <h3 class="stat-number">{{ stats.pending_reviews }}</h3>
+                        <p class="stat-label">Pending Reviews</p>
+                    </div>
+                </div>
             </div>
             
-            <!-- Manage Reviews Card -->
-            <div class="card" style="text-align: center; padding: 2rem;">
-                <div style="background: var(--dark-blue); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
-                    <i class="fas fa-star" style="color: white; font-size: 2.5rem;"></i>
+            <!-- Admin Actions -->
+            <h2 style="color: var(--dark-blue); margin-bottom: 2rem;" data-aos="fade-up">Quick Actions</h2>
+            
+            <div class="actions-grid" data-aos="fade-up">
+                <!-- Edit Doctor Card -->
+                <div class="action-card">
+                    <div class="action-icon action-icon-teal">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Edit Doctor Profile</h3>
+                    <p>Update doctor's information, qualifications, and bio</p>
+                    <a href="{{ url_for('admin.edit_doctor') }}" class="btn btn-primary">
+                        Edit Profile <i class="fas fa-arrow-right"></i>
+                    </a>
                 </div>
-                <h3 style="color: var(--dark-blue);">Manage Reviews</h3>
-                <p style="color: var(--text-light); margin-bottom: 1.5rem;">
-                    Approve or reject patient reviews
-                </p>
-                <a href="{{ url_for('admin.manage_reviews') }}" class="btn" style="background: var(--dark-blue); color: white;">
-                    Manage <i class="fas fa-arrow-right"></i>
-                </a>
+                
+                <!-- Manage Appointments Card -->
+                <div class="action-card">
+                    <div class="action-icon action-icon-aqua">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3>Manage Appointments</h3>
+                    <p>View, confirm, or cancel patient appointments</p>
+                    <a href="{{ url_for('admin.manage_appointments') }}" class="btn" style="background: var(--aqua); color: white;">
+                        Manage <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Manage Reviews Card -->
+                <div class="action-card">
+                    <div class="action-icon action-icon-dark">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Manage Reviews</h3>
+                    <p>Approve or reject patient reviews</p>
+                    <a href="{{ url_for('admin.manage_reviews') }}" class="btn" style="background: var(--dark-blue); color: white;">
+                        Manage <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Recent Appointments -->
+            <div class="recent-appointments" data-aos="fade-up">
+                <h2>Recent Appointments</h2>
+                <div class="appointments-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in recent_appointments %}
+                            <tr>
+                                <td>{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</td>
+                                <td>{{ appointment.appointment_date }}</td>
+                                <td>{{ appointment.appointment_time }}</td>
+                                <td>
+                                    <span class="status-badge status-{{ appointment.status }}">
+                                        {{ appointment.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-        
-        <!-- Recent Appointments -->
-        <div style="margin-top: 4rem;">
-            <h2 style="color: var(--dark-blue); margin-bottom: 2rem;">Recent Appointments</h2>
-            <div class="appointment-table">
-                <table style="width: 100%;">
-                    <thead>
-                        <tr>
-                            <th>Patient</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for appointment in recent_appointments %}
-                        <tr>
-                            <td>{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</td>
-                            <td>{{ appointment.appointment_date }}</td>
-                            <td>{{ appointment.appointment_time }}</td>
-                            <td>
-                                <span class="status-badge status-{{ appointment.status }}">
-                                    {{ appointment.status }}
-                                </span>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
     </div>
 </section>
 {% endblock %}
