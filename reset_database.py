@@ -1,11 +1,12 @@
-from app import app, db
+from app import app
+from extensions import db
 from models.models import User, Doctor, Service
 
 with app.app_context():
-    # Sab tables create karo
+    # Start from a clean slate every time.
+    db.drop_all()
     db.create_all()
-    
-    # Doctor banao
+
     doctor = Doctor(
         name='Dr. Zeeshan Ahmed',
         title='Clinical Psychologist',
@@ -17,8 +18,7 @@ with app.app_context():
         phone='+1 (555) 123-4567'
     )
     db.session.add(doctor)
-    
-    # Admin banao
+
     admin = User(
         username='admin',
         email='admin@drzeeshan.com',
@@ -28,8 +28,7 @@ with app.app_context():
     )
     admin.password = 'admin123'
     db.session.add(admin)
-    
-    # Services add karo
+
     services = [
         Service(name='Individual Therapy', description='One-on-one therapy sessions', icon='fas fa-user', order=1, is_active=True),
         Service(name='Couples Counseling', description='Relationship counseling', icon='fas fa-heart', order=2, is_active=True),
@@ -37,10 +36,8 @@ with app.app_context():
         Service(name='Depression Therapy', description='Depression treatment', icon='fas fa-cloud', order=4, is_active=True),
         Service(name='Stress Management', description='Stress reduction', icon='fas fa-leaf', order=5, is_active=True),
     ]
-    
-    for service in services:
-        db.session.add(service)
-    
+
+    db.session.add_all(services)
     db.session.commit()
     
     print("✅ Database reset successfully!")

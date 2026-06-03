@@ -1,19 +1,10 @@
 import os
 from datetime import datetime
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
-from flask_migrate import Migrate
-from flask_mail import Mail
+from extensions import db, login_manager, migrate, mail
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
-
-# Initialize extensions
-db = SQLAlchemy()
-login_manager = LoginManager()
-migrate = Migrate()
-mail = Mail()
 
 def create_app():
     app = Flask(__name__)

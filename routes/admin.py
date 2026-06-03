@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from models.models import Appointment, User, Review, Doctor, Setting, Service  
 from forms.forms import UpdateAppointmentStatusForm, DoctorProfileForm, AdminProfileForm, SettingForm, ServiceForm 
 from utils.email_helper import send_confirmation_email, send_completion_email
-from app import db
+from extensions import db
 from utils.decorators import admin_required
 from flask import jsonify
 
