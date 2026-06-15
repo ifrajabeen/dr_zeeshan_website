@@ -28,16 +28,30 @@
     {% include 'includes/_navbar.html' %}
     
     <!-- Flash Messages -->
-    <div class="container">
+    <div class="toast-container" aria-live="polite" aria-atomic="true">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <div style="margin-top: 20px;">
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}" data-aos="fade-down">
-                            {{ message }}
+                {% for category, message in messages %}
+                    <div class="toast toast-{{ category }}" data-toast>
+                        <div class="toast-content">
+                            <div class="toast-icon">
+                                {% if category == 'success' %}
+                                    <i class="fas fa-circle-check"></i>
+                                {% elif category == 'warning' %}
+                                    <i class="fas fa-triangle-exclamation"></i>
+                                {% elif category == 'danger' %}
+                                    <i class="fas fa-circle-xmark"></i>
+                                {% else %}
+                                    <i class="fas fa-circle-info"></i>
+                                {% endif %}
+                            </div>
+                            <div class="toast-message">{{ message }}</div>
+                            <button type="button" class="toast-close" aria-label="Close notification" data-toast-close>
+                                <i class="fas fa-xmark"></i>
+                            </button>
                         </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
             {% endif %}
         {% endwith %}
     </div>

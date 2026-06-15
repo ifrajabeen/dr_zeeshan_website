@@ -52,13 +52,19 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // Flash message auto-dismiss
 document.addEventListener('DOMContentLoaded', function() {
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(alert => {
-        setTimeout(() => {
-            alert.style.transition = 'opacity 0.5s ease';
-            alert.style.opacity = '0';
-            setTimeout(() => alert.remove(), 500);
-        }, 5000);
+    const toasts = document.querySelectorAll('[data-toast]');
+    toasts.forEach(toast => {
+        const closeButton = toast.querySelector('[data-toast-close]');
+        const dismissToast = () => {
+            toast.classList.add('toast-hide');
+            setTimeout(() => toast.remove(), 250);
+        };
+
+        if (closeButton) {
+            closeButton.addEventListener('click', dismissToast);
+        }
+
+        setTimeout(dismissToast, 5000);
     });
 });
 
@@ -81,7 +87,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (!isValid) {
                 e.preventDefault();
-                alert('Please fill in all required fields.');
+                if (typeof showToast === 'function') {
+                    showToast('Please fill in all required fields.', 'warning');
+                } else {
+                    alert('Please fill in all required fields.');
+                }
             }
         });
     });
@@ -137,4 +147,46 @@ window.onclick = function(event) {
             dropdown.style.display = 'none';
         }
     }
+}
+
+function showToast(message, category = 'info') {
+    const container = document.querySelector('.toast-container');
+    if (!container) {
+        alert(message);
+        return;
+    }
+
+    const icons = {
+        success: 'fa-circle-check',
+        warning: 'fa-triangle-exclamation',
+        danger: 'fa-circle-xmark',
+        info: 'fa-circle-info'
+    };
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${category}`;
+    toast.setAttribute('data-toast', 'true');
+    toast.innerHTML = `
+        <div class="toast-content">
+            <div class="toast-icon"><i class="fas ${icons[category] || icons.info}"></i></div>
+            <div class="toast-message">${message}</div>
+            <button type="button" class="toast-close" aria-label="Close notification" data-toast-close>
+                <i class="fas fa-xmark"></i>
+            </button>
+        </div>
+    `;
+
+    container.appendChild(toast);
+
+    const closeButton = toast.querySelector('[data-toast-close]');
+    const dismissToast = () => {
+        toast.classList.add('toast-hide');
+        setTimeout(() => toast.remove(), 250);
+    };
+
+    if (closeButton) {
+        closeButton.addEventListener('click', dismissToast);
+    }
+
+    setTimeout(dismissToast, 5000);
 }

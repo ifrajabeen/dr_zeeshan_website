@@ -28,7 +28,10 @@
                     
                     <div class="form-group">
                         {{ form.appointment_time.label(class="form-label") }}
-                        {{ form.appointment_time(class="form-control") }}
+                        {{ form.appointment_time(class="form-control", type="time", step="1800") }}
+                        <small style="display:block; margin-top:0.5rem; color: var(--text-light);">
+                            Available slots: 9:00 AM to 5:00 PM, every 30 minutes.
+                        </small>
                         {% if form.appointment_time.errors %}
                             {% for error in form.appointment_time.errors %}
                                 <span class="error-message">{{ error }}</span>

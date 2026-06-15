@@ -52,14 +52,9 @@ def create_app():
         """Make data available to all templates"""
         # Import inside function to avoid circular imports
         from models.models import Doctor, Service, Setting
-        
-        # Get or create doctor - with app context
-        with app.app_context():
-            doctor = Doctor.get_doctor()
-            services = Service.query.filter_by(is_active=True).order_by(Service.order).all()
-            settings = Setting.get_all_dict()
-        
-        # Settings dictionary
+
+        doctor = Doctor.get_doctor()
+        services = Service.query.filter_by(is_active=True).order_by(Service.order).all()
         settings = {
             'clinic_name': 'Dr. Zeeshan Ahmed',
             'footer_description': 'Providing compassionate, professional mental health care to help you achieve emotional wellness and balance.',
@@ -69,17 +64,9 @@ def create_app():
             'linkedin_url': '#',
             'clinic_phone': '+1 (555) 123-4567',
             'clinic_email': 'contact@drzeeshan.com',
-            'clinic_address': '123 Wellness Street, Medical District'
+            'clinic_address': '123 Wellness Street, Medical District',
         }
-        
-        # Services list
-        services = [
-            {'name': 'Individual Therapy', 'url': '#'},
-            {'name': 'Couples Counseling', 'url': '#'},
-            {'name': 'Anxiety Treatment', 'url': '#'},
-            {'name': 'Depression Therapy', 'url': '#'},
-            {'name': 'Stress Management', 'url': '#'},
-        ]
+        settings.update(Setting.get_all_dict())
         
         return dict(
             doctor=doctor,
